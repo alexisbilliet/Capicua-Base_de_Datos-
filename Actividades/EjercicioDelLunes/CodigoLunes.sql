@@ -95,7 +95,6 @@ create table Conciertos_Discos(
    foreign key (IDDisco) references Discos(IDDisco)
 );
 
-use ejercicio;
 INSERT INTO Cantantes (Nombre, Apellido, GeneroPrincipal) VALUES
 ('Juan','Pérez','Rock'),
 ('María','López','Pop'),
