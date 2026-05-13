@@ -41,9 +41,20 @@ create table series_plataformas
 );
 create table personajes
 (
- IDSerie_Plataforma int primary key auto_increment not null,
- IDPlataforma int,
- foreign key (IDPlataforma) references plataformas(IDPlataforma),
+ IDPersonajes int primary key auto_increment not null,
+ Nombre varchar(25),
+ edad int(3), 
+ Genero enum("M", "F"),
+ IDActor int,
+ foreign key (IDActor) references actor(IDActor)
+);
+create table temporadas
+(
+ IDTemporada int primary key auto_increment not null,
+ NumTemp int(2),
+ Nombre varchar(25),
+ descripcion text, 
+ Genero enum("M", "F"),
  IDSerie int,
  foreign key (IDSerie) references series(IDSerie)
-)
+);
