@@ -58,3 +58,21 @@ create table temporadas
  IDSerie int,
  foreign key (IDSerie) references series(IDSerie)
 );
+create table episodios
+(
+ IDEpisodos int primary key auto_increment not null,
+ NumEp int(2),
+ Nombre varchar(25),
+ descripcion text, 
+ puntuacion enum("0","1","2","3","4","5","6","7","8","9","10"),
+ IDTemporada int,
+ foreign key (IDTemporada) references temporadas(IDTemporada)
+);
+create table episodios_personajes
+(
+ IDEpisodio_Personaje int primary key auto_increment not null,
+ IDPersonaje int,
+ foreign key (IDPersonaje) references personajes(IDPersonaje),
+ IDSerie int,
+ foreign key (IDSerie) references series(IDSerie)
+);
