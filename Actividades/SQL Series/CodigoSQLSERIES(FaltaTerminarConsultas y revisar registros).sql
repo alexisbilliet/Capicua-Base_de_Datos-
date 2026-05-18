@@ -101,18 +101,18 @@ insert into series (nombre, GeneroPrincipal, AñoLanzamiento, Presupuesto, IDDir
 ("Dark","Intriga",2017,18000000,10);
 
 insert into plataformas (nombre, AñoLanzamiento) values
-("Netflix",1997),
+("Amazon",1997),
 ("Disney+",2019),
 ("Max",2020),
 ("Prime Video",2006),
 ("Apple TV",2019);
 
 insert into series_plataformas (IDPlataforma, IDSerie) values
-(1,1),(2,2),(3,3),(3,4),(4,5),(1,6),(5,7),(5,8),(4,9),(1,10);
+(1,1),(2,2),(3,3),(4,4),(5,5),(1,6),(2,7),(3,8),(4,9),(5,10);
 
 insert into temporadas (NumTemp, Nombre, descripcion, IDSerie) values
 (1,"Stranger Things 1","Desaparición de Will",1),
-(4,"Stranger Things 4","El regreso de Vecna",1),
+(1,"Dark 1","La oscuridad comienza",10),
 (1,"The Bear S1","El caos en la cocina",2),
 (1,"The Last of Us S1","El viaje de Joel y Ellie",3),
 (4,"Succession S4","La guerra final",4),
@@ -122,26 +122,58 @@ insert into temporadas (NumTemp, Nombre, descripcion, IDSerie) values
 (1,"Severance S1","Separación cerebral laboral",8),
 (1,"Fallout S1","Salida del refugio 33",9);
 
-insert into personajes (Nombre, edad, Genero) values
-("Eleven",14,"F"),
-("Carmy Berzatto",28,"M"),
-("Joel Miller",52,"M"),
-("Ellie Williams",14,"F"),
-("Kendall Roy",40,"M"),
-("Homelander",38,"M"),
-("Ted Lasso",45,"M"),
-("Mark Scout",42,"M"),
-("Lucy MacLean",22,"F"),
-("Jonas Kahnwald",17,"M");
+insert into actores(nombre, Apellido) values
+("Sharon", "Gimenez"),
+("Agustina", "Oldcountry"),
+("Santina", "Cerru"),
+("Sofia", "Rupp"),
+("Mia", "Pirro"),
+("Camila", "Sayed"),
+("Santiago", "Fidani"),
+("Tomate", "Pera"),
+("Cristina", "Kirchner"),
+("Mauricio", "Macri");
+
+insert into personajes (Nombre, edad, Genero, IDActor) values
+("Eleven",14,"F", 1),
+("Carmy Berzatto",28,"M", 2),
+("Joel Miller",52,"M", 3),
+("Ellie Williams",14,"F", 4),
+("Kendall Roy",40,"M", 5),
+("Homelander",38,"M", 6),
+("Ted Lasso",45,"M", 7),
+("Mark Scout",42,"M", 8),
+("Lucy MacLean",22,"F", 9),
+("Jonas Kahnwald",17,"M", 10);
 
 insert into episodios (NumEp, Nombre, descripcion, puntuacion, IDTemporada) values
-(101,"El mundo del revés","El inicio de todo",9.2,1),
-(102,"Dear Billy","El escape de Max",9.8,2),
-(103,"Sistema","El servicio más intenso",9.5,3),
-(104,"Mucho tiempo","La historia de Bill y Frank",9.9,4),
-(105,"Connor's Wedding","Un giro inesperado",10.0,5),
-(106,"El nombre del juego","Hughie se une a los Boys",8.8,6),
-(107,"Himno Nacional","El episodio del primer ministro",8.1,7),
-(108,"Piloto","Ted llega a Richmond",8.5,8),
+(1,"El mundo del revés","El inicio de todo",9.2,1),
+(2,"Dear Billy","El escape de Max",9.8,2),
+(3,"Sistema","El servicio más intenso",9.5,3),
+(4,"Mucho tiempo","La historia de Bill y Frank",9.9,4),
+(22,"Connor's Wedding","Un giro inesperado",10.0,5),
+(6,"El nombre del juego","Hughie se une a los Boys",8.8,6),
+(1,"Himno Nacional","El episodio del primer ministro",8.1,7),
+(5,"Piloto","Ted llega a Richmond",8.5,8),
+(6,"Lo que somos","El final de temporada",9.7,9),
+(9,"El fin","Descubrimientos en el yermo",9.4,10);	
+
+insert into episodios_personajes(IDPersonaje, IDEpisodio) values
+(1, 1), (2, 2), (3,3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10);
+
+
+select *
+from personajes
+group by genero;
+
+select directores.*
+from directores
+inner join series 
+on series.IDDirector = directores.IDDirector
+inner join series_plataformas
+on series.IDSerie = series_plataformas.IDSerie
+inner join plataformas
+on series_plataformas.IDPlataforma = plataformas.IDPlataforma
+where plataformas.nombre = "Amazon"
 (109,"Lo que somos","El final de temporada",9.7,9),
 (110,"El fin","Descubrimientos en el yermo",9.4,10);
