@@ -41,7 +41,7 @@ create table series_plataformas
 );
 create table personajes
 (
- IDPersonajes int primary key auto_increment not null,
+ IDPersonaje int primary key auto_increment not null,
  Nombre varchar(25),
  edad int(3), 
  Genero enum("M", "F"),
@@ -72,7 +72,7 @@ create table episodios_personajes
 (
  IDEpisodio_Personaje int primary key auto_increment not null,
  IDPersonaje int,
- foreign key (IDPersonaje) references personajes(IDPersonajes),
+ foreign key (IDPersonaje) references personajes(IDPersonaje),
  IDEpisodio int,
  foreign key (IDEpisodio) references episodios(IDEpisodio)
 );
@@ -112,6 +112,7 @@ insert into series_plataformas (IDPlataforma, IDSerie) values
 
 insert into temporadas (NumTemp, Nombre, descripcion, IDSerie) values
 (1,"Stranger Things 1","Desaparición de Will",1),
+(2,"Stranger Things 2","El Porque...",1),
 (1,"Dark 1","La oscuridad comienza",10),
 (1,"The Bear S1","El caos en la cocina",2),
 (1,"The Last of Us S1","El viaje de Joel y Ellie",3),
@@ -174,6 +175,20 @@ inner join series_plataformas
 on series.IDSerie = series_plataformas.IDSerie
 inner join plataformas
 on series_plataformas.IDPlataforma = plataformas.IDPlataforma
-where plataformas.nombre = "Amazon"
-(109,"Lo que somos","El final de temporada",9.7,9),
-(110,"El fin","Descubrimientos en el yermo",9.4,10);
+where plataformas.nombre = "Amazon";
+
+select personajes.IDPersonaje, personajes.nombre
+from personajes
+inner join episodios_personajes
+on episodios_personajes.IDPersonaje = personajes.IDPersonaje
+inner join episodios
+on episodios.IDEpisodio = episodios_personajes.IDEpisodio
+inner join temporadas
+on episodios.IDTemporada = temporadas.IDTemporada
+inner join series
+on series.IDSerie = temporadas.IDSerie
+inner join series_plataformas
+on series_plataformas.IDSerie = series.IDSerie
+inner join plataformas
+on plataformas.IDPlataforma = series_plataformas.IDPlataforma
+where plataformas.nombre = "Disney+"
