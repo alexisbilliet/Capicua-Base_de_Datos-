@@ -96,7 +96,7 @@ insert into series (nombre, GeneroPrincipal, AñoLanzamiento, Presupuesto, IDDir
 ("The Boys","Acción",2019,11000000,5),
 ("Black Mirror","Antología",2011,5000000,6),
 ("Ted Lasso","Comedia",2020,15000000,7),
-("Severance","Suspenso",2022,40000000,8),
+("Hora de Aventiras","Jake el perro",2010,40000000,8),
 ("Fallout","Sci-Fi",2024,150000000,9),
 ("Dark","Intriga",2017,18000000,10);
 
@@ -120,7 +120,7 @@ insert into temporadas (NumTemp, Nombre, descripcion, IDSerie) values
 (1,"The Boys S1","Los héroes son malos",5),
 (1,"Black Mirror S1","Tecnología y pesadillas",6),
 (1,"Ted Lasso S1","Un DT de fútbol americano en UK",7),
-(1,"Severance S1","Separación cerebral laboral",8),
+(1,"Hora de aventuras S1","Presentaion de personajes",8),
 (1,"Fallout S1","Salida del refugio 33",9);
 
 insert into actores(nombre, Apellido) values
@@ -167,7 +167,7 @@ select *
 from personajes
 group by genero;
 
-select directores.*
+select directores.*, plataformas.nombre as Plataforma
 from directores
 inner join series 
 on series.IDDirector = directores.IDDirector
@@ -193,3 +193,10 @@ inner join plataformas
 on plataformas.IDPlataforma = series_plataformas.IDPlataforma
 where plataformas.nombre = "Disney+"
 order by edad desc;
+
+select series.nombre, COUNT(*) as cantidadtemporadas
+from temporadas
+inner join series
+on series.IDSerie = temporadas.IDSerie
+group by temporadas.IDSerie
+limit 1;
