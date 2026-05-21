@@ -200,3 +200,15 @@ inner join series
 on series.IDSerie = temporadas.IDSerie
 group by temporadas.IDSerie
 limit 1;
+
+select personajes.nombre, series.nombre as serie
+from personajes
+inner join episodios_personajes
+on episodios_personajes.IDPersonaje = personajes.IDPersonaje
+inner join episodios
+on episodios.IDEpisodio = episodios_personajes.IDEpisodio
+inner join temporadas
+on episodios.IDTemporada = temporadas.IDTemporada
+inner join series
+on series.IDSerie = temporadas.IDSerie
+where series.nombre = "Hora de Aventuras"
