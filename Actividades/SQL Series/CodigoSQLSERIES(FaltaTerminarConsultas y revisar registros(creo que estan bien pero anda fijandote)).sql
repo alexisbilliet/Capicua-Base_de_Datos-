@@ -177,7 +177,7 @@ inner join plataformas
 on series_plataformas.IDPlataforma = plataformas.IDPlataforma
 where plataformas.nombre = "Amazon";
 
-select personajes.IDPersonaje, personajes.nombre
+select personajes.IDPersonaje, personajes.nombre, personajes.edad, plataformas.nombre as Plataforma
 from personajes
 inner join episodios_personajes
 on episodios_personajes.IDPersonaje = personajes.IDPersonaje
@@ -192,3 +192,4 @@ on series_plataformas.IDSerie = series.IDSerie
 inner join plataformas
 on plataformas.IDPlataforma = series_plataformas.IDPlataforma
 where plataformas.nombre = "Disney+"
+order by edad desc;
