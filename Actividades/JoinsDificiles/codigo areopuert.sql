@@ -65,13 +65,13 @@ insert into pasajeros (nombre, apellido, DNI) values
 ('Tomas', 'Lopez', 41222333);
 
 insert into tickets (precio, tipo, IDNroVuelo, IDPasajero) values
-(850, 'ClaseEconomica', 1, 1),
-(1200, 'ClaseEjecutiva', 1, 2),
-(950, 'EconomicaPremium', 2, 3),
-(700, 'ClaseEconomica', 3, 4),
-(1500, '1Clase', 1, 5),
-(1100, 'ClaseEjecutiva', 5, 1),
-(780, 'ClaseEconomica', 4, 2);
+(850000, 'ClaseEconomica', 1, 1),
+(1200000, 'ClaseEjecutiva', 1, 2),
+(950000, 'EconomicaPremium', 2, 3),
+(700000, 'ClaseEconomica', 3, 4),
+(1500000, '1Clase', 1, 5),
+(1100000, 'ClaseEjecutiva', 5, 1),
+(780000, 'ClaseEconomica', 4, 2);
 
 
 
