@@ -1,5 +1,5 @@
 create database vuelos;
-
+-- drop database vuelos
 use  vuelos;
 
 create table aviones
@@ -12,7 +12,9 @@ create table vuelos
 (
    IDNroVuelo int primary key auto_increment not null,
    origen varchar(25),
+   aeropuertoOrigen varchar(25),
    destino varchar(25),
+   aeropuertoDestino varchar(25),
    fecha date, 
    IDAvion int, 
    foreign key (IDAvion) references aviones(IDAvion)
@@ -28,49 +30,75 @@ create table tickets
 (
    IDTicket int primary key auto_increment not null,
    precio int(5),
-   tipo enum("1Clase, ClaseEjecutiva, EconomicaPremium, ClaseEconomica"),
+   tipo enum("1Clase", "ClaseEjecutiva", "EconomicaPremium", "ClaseEconomica"),
    IDNroVuelo int, 
    foreign key (IDNroVuelo) references vuelos(IDNroVuelo),
    IDPasajero int, 
    foreign key (IDPasajero) references pasajeros(IDPasajero)
 );
-insert into aviones (modelo, capacidad) values 
-('Boeing 777', 396),
-('Airbus A330', 277),
-('Embraer 190', 114),
-('Bombardier CRJ900', 90),
-('Boeing 757', 239);
+insert into pasajeros (nombre, apellido, DNI) values
+('Martin', 'Suarez', 40111222),
+('Valentina', 'Acosta', 38999888),
+('Ignacio', 'Romero', 42123456),
+('Camila', 'Benitez', 39888777),
+('Franco', 'Herrera', 41222333);
 
-insert into pasajeros (nombre, apellido, DNI) values 
-('Esteban', 'Quito', 45123789),
-('Aquiles', 'Bailo', 38456123),
-('Zoe', 'Aventurera', 95123456),
-('Cosme', 'Fulanito', 12345678),
-('Elena', 'Nito del Bosque', 22334455);
+insert into aviones (modelo, capacidad) values
+('Boeing 737', 180),
+('Airbus A320', 200),
+('Boeing 777', 350),
+('Airbus A330', 300),
+('Embraer 190', 100);
 
--- 5 Registros adicionales para VUELOS (IDAvion 4 y 5 son los de gran capacidad)
--- Nota: Se usa formato YYYY-MM-DD para evitar errores de tipo DATE.
-INSERT INTO vuelos (origen, destino, fecha, IDAvion) VALUES 
-('Ezeiza', 'Madrid', '2026-06-15', 4),
-('Aeroparque', 'Santiago', '2026-06-16', 2),
-('Cordoba', 'Miami', '2026-06-17', 5),
-('Mendoza', 'Lima', '2026-06-18', 3),
-('Ezeiza', 'Paris', '2026-06-19', 4);
+insert into vuelos (origen, aeropuertoOrigen, destino, aeropuertoDestino, fecha, IDAvion) values
+('Buenos Aires', 'EZEIZA', 'Madrid', 'Barajas', '2026-05-01', 1),
+('Buenos Aires', 'EZEIZA', 'Roma', 'Fiumicino', '2026-05-03', 2),
+('Cordoba', 'Pajas Blancas', 'Santiago', 'Arturo Merino', '2026-05-05', 3),
+('Mendoza', 'El Plumerillo', 'Lima', 'Jorge Chavez', '2026-08-06', 4),
+('Buenos Aires', 'EZEIZA', 'Miami', 'Miami Intl', '2026-09-10', 5);
 
--- 5 Registros iniciales para TICKETS
--- (Para cumplir tu consigna de >100 pasajeros y >$2M, deberías insertar muchos más registros aquí)
-INSERT INTO tickets (precio, tipo, IDNroVuelo, IDPasajero) VALUES 
-(550000, '1Clase', 6, 1),
-(480000, 'ClaseEjecutiva', 8, 2),
-(150000, 'ClaseEconomica', 7, 3),
-(600000, '1Clase', 10, 4),
-(120000, 'ClaseEconomica', 9, 5);
+insert into pasajeros (nombre, apellido, DNI) values
+('Juan', 'Perez', 40111222),
+('Maria', 'Gomez', 38999888),
+('Lucas', 'Fernandez', 42123456),
+('Sofia', 'Martinez', 39888777),
+('Tomas', 'Lopez', 41222333);
+
+insert into tickets (precio, tipo, IDNroVuelo, IDPasajero) values
+(850, 'ClaseEconomica', 1, 1),
+(1200, 'ClaseEjecutiva', 1, 2),
+(950, 'EconomicaPremium', 2, 3),
+(700, 'ClaseEconomica', 3, 4),
+(1500, '1Clase', 1, 5),
+(1100, 'ClaseEjecutiva', 5, 1),
+(780, 'ClaseEconomica', 4, 2);
 
 
 
-select aviones.modelo
+
+
+select aviones.modelo, SUM(precio) as TotalRecaudado, aviones.capacidad
 from aviones
 inner join vuelos
 on aviones.IDAvion = vuelos.IDAvion
 inner join tickets
 on tickets.IDNroVuelo = vuelos.IDNroVuelo
+group by aviones.IDAvion, aviones.capacidad
+having TotalRecaudado > 2000000
+and aviones.capacidad > 100;
+
+select vuelos.IDNroVuelo, AVG(tickets.precio) as PromedioTicket
+from tickets
+inner join vuelos
+on vuelos.IDNroVuelo = tickets.IDNroVuelo
+where vuelos.aeropuertoOrigen = "EZEIZA"
+group by IDNroVuelo
+having AVG(tickets.precio) > 500;
+
+select aviones.modelo, count(vuelos.IDNroVuelo) as CantidaddeVuelos
+from aviones
+inner join vuelos
+on vuelos.IDAvion = aviones.IDAvion
+where vuelos.fecha >= date_sub('2026-05-27', interval 1 month)
+group by aviones.IDAvion 
+having count(vuelos.IDNroVuelo) >= 50 	
