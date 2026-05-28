@@ -2,22 +2,22 @@ create database gimnasio;
 use gimnasio;
 
 create table socios (
-    IDSocio int auto_increment primary key,
-    nombre varchar(100) not null,
-    fechainscripcion date not null
+    IDSocio int auto_increment primary key not null,
+    nombre varchar(25),
+    fechainscripcion date 
 );
 
 create table planes (
-    IDPlan int auto_increment primary key,
-    tipo varchar(50) not null,
-    costo decimal(10,2) not null
+    IDPlan int auto_increment primary key not null,
+    tipo varchar(25) not null,
+    costo decimal
 );
 
 create table pagos (
-    IDPago int auto_increment primary key,
-    IDSocio int not null,
+    IDPago int auto_increment primary key not null,
+    IDSocio int,
     foreign key (IDSocio) references socios(IDSocio),
-    IDPlan int not null,
+    IDPlan int,
 	foreign key (IDPlan) references planes(IDPlan),
     monto decimal,
     fecha date 
