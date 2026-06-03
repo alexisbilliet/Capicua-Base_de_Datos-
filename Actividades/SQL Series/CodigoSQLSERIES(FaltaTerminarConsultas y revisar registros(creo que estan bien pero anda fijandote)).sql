@@ -65,7 +65,8 @@ create table episodios
  descripcion text, 
  puntuacion decimal(3,1),
  IDTemporada int,
- foreign key (IDTemporada) references temporadas(IDTemporada)
+ foreign key (IDTemporada) references temporadas(IDTemporada),
+ FechaEstreno date
 );
 
 create table episodios_personajes
@@ -96,7 +97,7 @@ insert into series (nombre, GeneroPrincipal, AñoLanzamiento, Presupuesto, IDDir
 ("The Boys","Acción",2019,11000000,5),
 ("Black Mirror","Antología",2011,5000000,6),
 ("Ted Lasso","Comedia",2020,15000000,7),
-("Hora de Aventiras","Jake el perro",2010,40000000,8),
+("Hora de Aventuras","Jake el perro",2010,40000000,8),
 ("Fallout","Sci-Fi",2024,150000000,9),
 ("Dark","Intriga",2017,18000000,10);
 
@@ -147,17 +148,17 @@ insert into personajes (Nombre, edad, Genero, IDActor) values
 ("Lucy MacLean",22,"F", 9),
 ("Jonas Kahnwald",17,"M", 10);
 
-insert into episodios (NumEp, Nombre, descripcion, puntuacion, IDTemporada) values
-(1,"El mundo del revés","El inicio de todo",9.2,1),
-(2,"Dear Billy","El escape de Max",9.8,2),
-(3,"Sistema","El servicio más intenso",9.5,3),
-(4,"Mucho tiempo","La historia de Bill y Frank",9.9,4),
-(22,"Connor's Wedding","Un giro inesperado",10.0,5),
-(6,"El nombre del juego","Hughie se une a los Boys",8.8,6),
-(1,"Himno Nacional","El episodio del primer ministro",8.1,7),
-(5,"Piloto","Ted llega a Richmond",8.5,8),
-(6,"Lo que somos","El final de temporada",9.7,9),
-(9,"El fin","Descubrimientos en el yermo",9.4,10);	
+insert into episodios (NumEp, Nombre, descripcion, puntuacion, IDTemporada, FechaEstreno) values
+(1,"El mundo del revés","El inicio de todo",9.2,1, "2016-05-16"),
+(2,"Dear Billy","El escape de Max",9.8,2, "2017-08-09"),
+(3,"Sistema","El servicio más intenso",9.5,3, "2017-01-09"),
+(4,"Mucho tiempo","La historia de Bill y Frank",9.9,4, "2022-07-05"),
+(22,"Connor's Wedding","Un giro inesperado",10.0,5, "2023-07-05"),
+(6,"El nombre del juego","Hughie se une a los Boys",8.8,6, "2018-05-03"),
+(1,"Himno Nacional","El episodio del primer ministro",8.1,7, "2019-09-18" ),
+(5,"Piloto","Ted llega a Richmond",8.5,8, "2011-01-02"),
+(6,"Lo que somos","El final de temporada",9.7,9, "2010-11-17" ),
+(9,"El fin","Descubrimientos en el yermo",9.4,10, "2024-12-14" );	
 
 insert into episodios_personajes(IDPersonaje, IDEpisodio) values
 (1, 1), (2, 2), (3,3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10);
@@ -211,4 +212,15 @@ inner join temporadas
 on episodios.IDTemporada = temporadas.IDTemporada
 inner join series
 on series.IDSerie = temporadas.IDSerie
-where series.nombre = "Hora de Aventuras"
+where series.nombre = "Hora de Aventuras";
+
+select series.nombre, series.Presupuesto
+from series
+order by Presupuesto desc	
+limit 1;
+
+select episodios.nombre as nombre, episodios.puntuacion as Puntaje, episodios.FechaEstreno 
+from episodios
+where episodios.FechaEstreno >= "2020-01-01"
+order by Puntaje desc
+limit 1;
