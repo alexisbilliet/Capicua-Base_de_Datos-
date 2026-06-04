@@ -1,3 +1,7 @@
 1. Definir:
   ● A. ¿Qué es una Clave Primaria (Primary Key) y para qué sirve en una tabla?
-      Una clave primaria es el identificador unico de cada tabla
+      Una Clave primaria (Primary key) es un tipo de identificador unico de cada tabla, sirve para diferenciar registros dentro de la misma
+  ● B. Explique la diferencia entre un dato y la información.
+      Un dato suele ser una palabra o numero solo, osea, sin contexto previo "Manzana" es un dato.
+      Por si misma no nos dice nada, mientras que la informacion es un conjunto de datos con un contexto previo, "La manzana roja y muy dulce", 
+      eso si nos dice algo que nos sirve, entonces seria informacion
