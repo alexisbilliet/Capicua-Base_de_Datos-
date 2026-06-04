@@ -5,3 +5,8 @@
       Un dato suele ser una palabra o numero solo, osea, sin contexto previo "Manzana" es un dato.
       Por si misma no nos dice nada, mientras que la informacion es un conjunto de datos con un contexto previo, "La manzana roja y muy dulce", 
       eso si nos dice algo que nos sirve, entonces seria informacion
+2. Verdadero o Falso (Justifique las falsas):
+  ● A. Un atributo es lo mismo que un campo -V-
+  ● B. En un DER, las relaciones 1 a N indican que un registro de la tabla A se relaciona con un solo registro de la tabla B. -V-
+  ● C. El software propietario permite al usuario modificar el código fuente libremente.
+  ● D. Una tabla es un conjunto de registros y campos. -V-  
