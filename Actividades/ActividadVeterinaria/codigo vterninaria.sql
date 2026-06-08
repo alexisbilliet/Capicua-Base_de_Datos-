@@ -10,7 +10,7 @@ create table duenios
     Apellido varchar(25),
     Telefono int(25)
 );
-create table Mascotas
+create table mascotas
 (
 	IDMascota int primary key auto_increment not null,
     Nombre varchar(25),
@@ -23,10 +23,10 @@ create table Mascotas
 create table veterinarios
 (
 	IDVeterinario int primary key auto_increment not null,
-    Legajo int(10),
+    DNI int(10),
     Nombre varchar(25),
-    Especialidad varchar(25),
-    Turno enum("Mañana", "Tarde", "Noche")
+    Apellido varchar(25),
+    Telefono int(25)
 );
 create table turnos
 (
@@ -40,3 +40,28 @@ create table turnos
     foreign key (IDVeterinario) references veterinarios(IDVeterinario)
     
 );
+insert into duenios(DNI, Nombre, Apellido, Telefono) values
+(50024742, "Santiago", "Fidani", 1134520496),
+(49865012, "Benjamin", "Sala", 1146960259);
+
+insert into Mascotas(Nombre, Especie, Edad, Raza, IDDuenio) values
+("Ramón", "Perro", 5, "Golden Retriver", 2),
+("Lolo", "Gato", 2, "Siames", 1);
+
+insert into veterinarios(DNI, Nombre, Apellido, Telefono) values
+(38765023, "Julian", "Dominguez", 1156750296),
+(50259264, "Benjamin", "Gimenez", 1145989687);
+
+insert into turnos(Fecha, Hora, motivo, IDMascota, IDVeterinario) values
+("2026-05-06", "12:30:00", "Sufrio una fractura en la pata delantera izquierda", 1, 1),
+("2026-07-08", "15:30:00", "Inyeccion de medicamentos", 2, 2);
+
+select * 
+from mascotas;
+
+select nombre, apellido
+from duenios;
+
+select * 
+from turnos
+where Fecha > "2024-05-01"
