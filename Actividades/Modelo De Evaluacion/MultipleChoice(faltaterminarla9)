@@ -1,0 +1,54 @@
+1-
+¿Cuál es la función de la cláusula "WHERE" en una consulta
+SQL?
+b) Se utiliza para filtrar filas basadas en una condición especificada.
+
+2-
+¿Cuál de las siguientes sentencias SQL se utiliza para agregar una nueva fila a una
+tabla?
+b) `ALTER`
+
+3-
+¿Qué comando SQL se utiliza para eliminar todos los registros de una tabla sin
+eliminar la tabla en sí?
+d) `TRUNCATE`
+
+4-
+Si tienes una tabla llamada "Productos" con una columna "Precio" y deseas
+encontrar el precio promedio de todos los productos, ¿cuál sería la consulta SQL
+correcta?
+a) `SELECT AVG(Precio) FROM Productos;`
+
+5-
+¿Cuál es el resultado de la siguiente consulta SQL?
+SELECT COUNT(*) FROM Empleados WHERE Departamento = 'Ventas';
+b) Muestra el número de empleados en el departamento de Ventas.
+
+6-
+¿Cuál es el propósito de la cláusula "GROUP BY" en una consulta SQL? 
+c) Agrupar filas en función de los valores de una o más columnas.
+
+7- 
+¿Qué hace la cláusula HAVING en SQL?
+b) Filtra grupos después de aplicar GROUP BY
+
+8- 
+Estas 2 consultas devuelven lo mismo? JUSTIFICAR porque si ó porque no.
+Consulta 1:
+SELECT Clientes.Nombre, Pedidos.Fecha
+FROM Clientes
+INNER JOIN Pedidos ON Clientes.ID = Pedidos.ID_cliente;
+
+Consulta 2:
+SELECT Clientes.Nombre, Pedidos.Fecha
+FROM Clientes, Pedidos
+WHERE Clientes.ID = Pedidos.ID_cliente;
+
+SI, devuelven lo mismo, ya que lo que esta haciendo para unir las tablas es correcto de las dos formas y pide que devuelva lo mismo asi que no habira diferencia en el feedback
+
+9-
+¿Cuál es el propósito de la cláusula “INNER JOIN” en una consulta SQL, realice
+un ejemplo de INNER JOIN.
+
+El proposito de la calusula INNER JOIN es el de relacionar dos tablas en una consulta para acceder a todos los datos de la tabla a relacionar un ejemplo seria este
+
