@@ -6,7 +6,7 @@ b) Se utiliza para filtrar filas basadas en una condición especificada.
 2-
 ¿Cuál de las siguientes sentencias SQL se utiliza para agregar una nueva fila a una
 tabla?
-b) `ALTER`
+c) `INSERT INTO`
 
 3-
 ¿Qué comando SQL se utiliza para eliminar todos los registros de una tabla sin
