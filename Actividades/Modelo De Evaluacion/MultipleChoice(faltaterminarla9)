@@ -56,10 +56,11 @@ un ejemplo de INNER JOIN.
 El proposito de la calusula INNER JOIN es el de relacionar dos tablas en una consulta para 
 acceder a datos de la tabla a relacionar un ejemplo seria este
 
-Select Ventas.IDVenta as Venta, Vendedores.nombre, Ventas.Precio
-from Ventas
-inner join Vendedores                                                 //Uso el Inner join para poder ver el nombre del venddor que hizo la venta que esta en la tabla vendedores
-on Vendedores.IDVendedor = Ventas.IDVendedor
+Select Ventas.IDVenta as Venta, Vendedores.nombre, Ventas.Precio  
+from Ventas                                                       
+inner join Vendedores                                             //Uso el Inner join para poder ver el nombre del venddor  
+on Vendedores.IDVendedor = Ventas.IDVendedor                      que hizo la venta, que esta en la tabla vendedores                                             
+
 //////////////////////////////////////////////////////////////////////////////////////////
 10.
 Explica que es un diccionario de datos y ¿para qué sirve?.
