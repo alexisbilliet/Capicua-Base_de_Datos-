@@ -37,11 +37,11 @@ insert into productos (Nombre, Descripcion, Precio, Stock) values
 ('Dulce de Leche ', 'Frasco de 1kg', 6500, 30);
 
 insert into  clientes (Nombre, Apellido, CorreoElectronico, Direccion) values
-('benjamin', 'sala', 'juan.gonzalez@gmail.com', 'Av. Rivadavia 1234'),
-('zaira', 'cuiti', 'martina.fernandez@gmail.com', 'San Martin 456'),
-('bianca', 'ducasse', 'facu.rodriguez@gmail.com', 'Belgrano 789'),
-('Camila', 'sayed', 'camila.lopez@gmail.com', 'Mitre 321'),
-('Santiago', 'fidani', 'santiago.perez@gmail.com', 'Sarmiento 654');
+('benjamin', 'sala', 'benja.sala@gmail.com', 'Av. Rivadavia 1234'),
+('zaira', 'cuiti', 'zaira.cuiti@gmail.com', 'San Martin 456'),
+('bianca', 'ducasse', 'bianca.ducasse@gmail.com', 'Belgrano 789'),
+('Camila', 'sayed', 'camila.sayed@gmail.com', 'Mitre 321'),
+('Santiago', 'fidani', 'santiago.fidani@gmail.com', 'Sarmiento 654');
 
 insert into  pedidos (IDCliente, IDProducto, Fecha, Estado) values
 (1, 1, '2026-06-01', 'Entregado'),
