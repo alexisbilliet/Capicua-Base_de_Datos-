@@ -7,6 +7,6 @@
       eso si nos dice algo que nos sirve, entonces seria informacion
 2. Verdadero o Falso (Justifique las falsas):
   ● A. Un atributo es lo mismo que un campo -V-
-  ● B. En un DER, las relaciones 1 a N indican que un registro de la tabla A se relaciona con un solo registro de la tabla B. -V-
+  ● B. En un DER, las relaciones 1 a N indican que un registro de la tabla A se relaciona con un solo registro de la tabla B. -F- Se pueden relacionar con mas de un registro
   ● C. El software propietario permite al usuario modificar el código fuente libremente. -F- Solo el software libre te permite modificar el codgio fuente
   ● D. Una tabla es un conjunto de registros y campos. -V-  
