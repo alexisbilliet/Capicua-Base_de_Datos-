@@ -7,7 +7,7 @@ create table Creadores
 	IDCreador int not null auto_increment primary key,
     Nombre varchar(25),
     Apellido varchar(25),
-    edad int
+    Edad int
 );
 create table Series
 (
@@ -32,20 +32,26 @@ create table Episodios
     Titulo varchar(25),
     IDSerie int,
     foreign key(IDSerie) references Series(IDSerie),
-	Duracion time,
-    rating int
+	DuracionMinutos int,
+    Rating float
 );
 create table HablididadesEspeciales
 (
 	IDHabilidad int not null auto_increment primary key,
-    IDPersonaje int,
-    foreign key(IDPersonaje) references Personajes(IDPersonaje),
     Nombre Varchar(25),
 	Tipo Varchar(25)
 );
+create table HablididadesPersonajes
+(
+	IDHabilidadPersonaje int not null auto_increment primary key,
+    IDPersonaje int,
+    foreign key (IDPersonaje) references Personajes(IDPersonaje),
+    IDHabilidad int,
+    foreign key (IDHabilidad) references HablididadesEspeciales(IDHabilidad)
+);
 create table Rivalidades
 (
-	IDRivalidade int not null auto_increment primary key,
+	IDRivalidad int not null auto_increment primary key,
     IDHeroe int,
     foreign key(IDHeroe) references Personajes(IDPersonaje),
     IDVillano int,
@@ -64,4 +70,32 @@ create table ObjetosMisticos
 insert into Creadores(Nombre, Apellido, edad) values
 ("Quentin", "Tarantino", 63),
 ("Martin", "Scorsese", 73),
-("Christopher", "Scorsese", 73)
+("Christopher", "Nolan", 73);
+
+insert into Series(Nombre, Estreno, IDCreador) values
+("Hora De Aventura", 2010, 1),
+("Ben 10", 2005, 1),
+("Billy y Mandy", 2003, 2),
+("Un Show Mas", 2010, 2),
+("Coraje el Perro Cobarde", 1999, 3),
+("El laboratorio de Dexter", 1996, 3);
+
+insert into Personajes(Nombre, IDSerie, Rol, NivelEnergia) values
+("Finn El Humano", 1, "Protagonista", 85),
+("Jake el Perro", 1, "Protagonista", 90),
+("Rey Helado", 1, "Antagonista", 75),
+("Ben Tennyson", 2, "Protagonista", 95),
+("Vilgax", 2, "Antagonista", 98),
+("Puro Hueso", 3, "Secundario", 80),
+("Mordecai", 4, "Protagonista", 60),
+("Rigby", 4, "Protagonista", 55),
+("Coraje", 5, "Protagonista", 40),
+("Dexter", 6, "Protagonista", 70);
+
+insert into Episodios(Titulo, IDSerie, DuracionMinutos, Rating) values
+("Rescate de Jake", 1, 40, 8.7),
+("El Omnitrix", 2, 22, 6.9),
+("El problema de Billy", 3, 27, 4.9),
+("El regreso del diablo", 4, 32, 9.4),
+("Cobardia", 5, 21, 7.1),
+("La explosion", 6, 34, 8.1);
