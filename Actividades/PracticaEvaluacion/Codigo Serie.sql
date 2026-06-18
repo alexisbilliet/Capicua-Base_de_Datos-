@@ -99,3 +99,31 @@ insert into Episodios(Titulo, IDSerie, DuracionMinutos, Rating) values
 ("El regreso del diablo", 4, 32, 9.4),
 ("Cobardia", 5, 21, 7.1),
 ("La explosion", 6, 34, 8.1);
+
+insert into HablididadesEspeciales(Nombre, Tipo) values
+("Uso de la Espada", "Cuerpo a Cuerpo"),
+("Elongacion", "Apoyo"),
+("Hielo", "Ataque a distancia"),
+("Convertirse", "Transformacion"),
+("Proyeccion de Energio", "Ataque a distancia"),
+("Telequinesis", "Ataque a distancia"),
+("Artes Marciales", "Cuerpo a Cuerpo"),
+("agujeros negros", "Creacion"),
+("Valentia", "Apoyo"),
+("Superdotado", "Apoyo");
+
+insert into HablididadesPersonajes(IDPersonaje, IDHabilidad) values
+(1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9), (10,10);
+
+insert into ObjetosMisticos(Nombre, IDPersonajeDuenio, ValorSubasta) values
+("Espada de Diamante", 1, 1000000),
+("BMO", 2, 50000),
+("Corona Magica", 3, 800000),
+("Omnitrix", 4, 9999999),
+("Ascalon", 5, 100000),
+("Hueso de Percebe", 6, 100000000),
+("El Poder", 7, 250000),
+("Guantes de la Suerte", 8, 200000),
+("Coraje", 5, "Protagonista", 40),
+("Dexter", 6, "Protagonista", 70);
+
