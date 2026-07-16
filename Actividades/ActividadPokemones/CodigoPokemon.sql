@@ -10,7 +10,7 @@ Create table Regiones
 );
 Create table Ciudades
 (
-	IDCiudades int primary key not null auto_increment,
+	IDCiudad int primary key not null auto_increment,
     Nombre varchar(25),
     Poblacion int, 
     IDRegion int,
@@ -45,10 +45,58 @@ Create table Pokemones
 );
 Create table Evoluciones
 (
-	IDEspecie int primary key not null auto_increment,
-    Nombre varchar(25),
-    NumPokeDex int, 
+	IDEvolucion int primary key not null auto_increment,
+    IDFaseNueva int,
+    foreign key (IDFaseNueva) references Especies(IDEspecie),
+    IDFasePrevia int,
+    foreign key (IDFasePrevia) references Especies(IDEspecie)
+);
+Create table HistorialEvoluciones
+(
+	IDHistorial int primary key not null auto_increment,
+    Fecha date, 
+    MetodoEvolucion text,
+    IDPokemon int,
+    foreign key (IDPokemon) references Pokemones(IDPokemon),
+    IDEvolucion int,
+    foreign key (IDEvolucion) references Evoluciones(IDEvolucion)
+);
+Create table Gimnasios
+(
+	IDGimnasio int primary key not null auto_increment,
+    Nombre Varchar(25), 
     TipoElemento varchar(25),
-    IDRegion int,
-    foreign key (IDRegion) references Regiones(IDRegion)
+    IDLider int,
+    foreign key (IDLider) references Entrenadores(IDEntrenador),
+    IDCiudad int,
+    foreign key (IDCiudad) references Ciudades(IDCiudad)
+);
+Create table Equipos
+(
+	IDEquipo int primary key not null auto_increment,
+    ObjetoEquipado Varchar(25), 
+    IDPokemon int,
+    foreign key (IDPokemon) references Pokemones(IDPokemon)
+);
+Create table Batallas
+(
+	IDBatalla int primary key not null auto_increment,
+    Fecha date, 
+    Ganador enum("Atacante", "Defensor"),
+    IDAtacante int,
+    foreign key (IDAtacante) references Entrenadores(IDEntrenador),
+    IDDefensor int,
+    foreign key (IDDefensor) references Entrenadores(IDEntrenador),
+    IDEquipoAtacante int,
+    foreign key (IDEquipoAtacante) references Equipos(IDEquipo),
+    IDEquipoDefensor int,
+    foreign key (IDEquipoDefensor) references Equipos(IDEquipo)
+);
+Create table BatallasGimnasios
+(
+	IDBatallaGimnasio int primary key not null auto_increment,
+    IDBatalla int,
+    foreign key (IDBatalla) references Batallas(IDBatalla),
+    IDGimnasio int,
+    foreign key (IDGimnasio) references Gimnasios(IDGimnasio)
 );
