@@ -64,7 +64,7 @@ Create table HistorialEvoluciones
 Create table Gimnasios
 (
 	IDGimnasio int primary key not null auto_increment,
-    Nombre Varchar(25), 
+    Nombre Varchar(50), 
     TipoElemento varchar(25),
     IDLider int,
     foreign key (IDLider) references Entrenadores(IDEntrenador),
