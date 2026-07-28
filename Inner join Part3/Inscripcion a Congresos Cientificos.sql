@@ -1,5 +1,5 @@
-create database tt;
-use tt;
+create database test;
+use test;
 
 create table Congresos (
 IDCon int auto_increment primary key,
@@ -12,16 +12,16 @@ create table Expositores (
 IDExp int auto_increment primary key,
 nombre varchar(50),
 pais varchar(50),
-especialidad varchar(20)
+especialidad varchar(50)
 );
 
 create table Charlas (
 IDCharla int auto_increment primary key,
 IDCon int,
-TituloCharla varchar(50),
+TituloCharla varchar(150),
 Asistentes_Estimados int,
 IDExp int,
-duracionMin time,
+duracionMin int,
 Foreign key (IDCon) references Congresos (IDCon),
 foreign key (IDExp) references Expositores (IDExp)
 );
@@ -29,27 +29,27 @@ foreign key (IDExp) references Expositores (IDExp)
 
 insert into Congresos(tematica, Fecha_inicio, PrecioInscripcion)
 values
-("Congreso de lectura", '2026-06-06', 1500.00),
-("Congreso del poder", '2022-05-04', 1900.00),
-("Congreso de historia", '2024-09-03', 1400.00),
-("Congreso Escolar", '2022-09-09', 1209.50),
-("Congreso de inteligencia artificial", '2008-05-11', 1500.50);
+("Congreso de Inteligencia Artificial Avanzada", '2026-06-06', 1500.00), 
+("Congreso del poder", '2022-05-04', 1900.00),            
+("Congreso de historia", '2024-09-03', 1400.00),           
+("Congreso Escolar", '2022-09-09', 1209.50),                    
+("Inteligencia en la Medicina", '2008-05-11', 1500.50);
 
 insert into Expositores(nombre, pais, especialidad)
 values
-("Feria de libro", 'Argentina', "Leer"),
-("Dinero", "China", "Financiar"),
-("Historia antigua", "Brasil", "Investiagar" ),
-("Color azul", "Chile", "Azul"),
-("Laboratorios", "Uruguay", "Farmaceuticos");
+("Carlos Perez", 'Chile', "Sistemas"),     
+("Ana Gomez", "Brasil", "Finanzas"),       
+("Luis Silva", "Brasil", "Historia"),      
+("Maria Paz", "Chile", "Educacion"),
+("Juan Lopez", "Chile", "Medicina");
 
 insert into Charlas(IDCon, TituloCharla, Asistentes_Estimados , IDExp, duracionMin )
 values
-(1, "Poemas", '150', 1, '90'),
-(2, "Palabras", '22', 2, '80'),
-(3, "Antiguedad", '120', 3, '70'),
-(4, "Arcoiris", '200', 4, '30'),
-(5, "Formulas", '30', 5, '400');
+(1, "Diagnostico IA", 120, 1, '90'), 
+(2, "leyes", 150, 2, '80'), 
+(3, "Antiguedad", 110, 3, '70'),   
+(4, "Lectura", 200, 4, '30'),      
+(5, "Sistema Nervioso", 30, 5, '400');
 
 -- Consulta 1
 select Congresos.tematica, sum(Charlas.Asistentes_Estimados) as  totalAsistentes from Congresos
@@ -65,7 +65,7 @@ select Expositores.pais, avg(Charlas.Asistentes_Estimados) as promedio_de_Asiste
 from Expositores
 inner join Charlas on Expositores.IDExp = Charlas.IDExp
 inner join Congresos on Charlas.IDCon = Congresos.IDCon
-where Congresos.tematica like '%InteligenciaArtificial%'
+where Congresos.tematica like '%Inteligencia Artificial%'
 group by Expositores.pais;
 
 -- Consulta 3
