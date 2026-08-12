@@ -1,0 +1,77 @@
+.containertitulo{
+    background-color:rgb(100, 150, 200) ;
+    border-radius: 15px;
+    width: 42.5% ;
+    margin: auto;
+    padding: 1px;
+}
+.presentacioncontainer{
+    background-color:rgb(100, 150, 200) ;
+    margin: 1% auto;
+    width: 99%;
+    text-align: center;
+    border-radius: 20px;
+    padding:0.1px;
+}
+.presentacioncard{
+    background-color: white;
+    width: 95%;
+    margin: 1% auto;
+    border-radius: 10px;
+}
+.container{
+    background-color:rgb(100, 150, 200);
+    
+    margin: 1% auto;
+    width: 99%;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 20px;
+}
+.card{
+    background-color: white;
+    color: black;
+    width: 30%;
+    text-align: center;
+    margin: 1% auto;
+    font-size: large;
+    border-radius: 10px;
+}
+.titulodiv{
+    width:85%;
+    background-color: white;
+    margin: 2% auto;
+    text-align: center;
+    color: black;
+    border-radius: 10px;;
+}
+#textpresentacion{
+    color:black;
+}
+#Titulocard{
+    font-size: xx-large;
+}
+#Textocard{
+    padding: 5%;
+    line-height: 190%;
+    font-size: 110%;
+}
+#text{
+    font-size: 80px;
+    color: white;
+    text-align: left;
+    margin-left:33%;
+    margin-top: 70%;
+}
+#Titulo{
+    color:black;
+    font-size: 70px; 
+    margin: 0;
+}
+#Titulo2{
+    color:black; 
+    margin: 0;
+}
+body{
+    background-image: url("../Fondo.jpg");
+}
