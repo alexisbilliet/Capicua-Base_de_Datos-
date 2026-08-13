@@ -1,0 +1,36 @@
+body {
+    background-color: #d8bee9;
+    color: #000000;
+    font-family: Lora;
+}
+
+
+.Titulo {
+    text-align: center;
+   
+}
+
+
+
+.Caja{
+    background-color: #ad87c7;
+    font-family: 'Georgia';
+    border: 1px solid var(--bs-gray-200);
+    border-radius: .25rem;
+}
+
+
+#TituloCaja {
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+
+
+.card {
+    color: #333333;
+    font-family: 'Lucida Sans', sans-serif;
+}
+
+
