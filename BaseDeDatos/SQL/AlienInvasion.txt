@@ -1,0 +1,250 @@
+CREATE DATABASE AlienInvasion;
+USE AlienInvasion;
+
+CREATE TABLE Niveles (
+    IDNivel INT PRIMARY KEY,
+    MultDano DECIMAL(10,2),
+    MultVel DECIMAL(10,2),
+    MultVida DECIMAL(10,2),
+    PuntosNecesarios INT
+);
+
+CREATE TABLE TiposAcciones (
+    IDTipoAccion INT PRIMARY KEY,
+    Nombre VARCHAR(25) NOT NULL,
+    Descripcion TEXT
+);
+
+CREATE TABLE Efectos (
+    IDEfecto INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    DPS INT,
+    Duracion INT,
+    Descripcion TEXT
+);
+
+CREATE TABLE Municiones (
+    IDMunicion INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    MultDano DECIMAL(10,2),
+    Descripcion TEXT,
+    IDEfecto INT,
+    CONSTRAINT FK_Municiones_Efectos
+        FOREIGN KEY (IDEfecto)
+        REFERENCES Efectos(IDEfecto)
+);
+
+CREATE TABLE Players (
+    IDPlayer INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Dinero DECIMAL(10,2) DEFAULT 0,
+    Edad INT
+);
+
+CREATE TABLE Naves (
+    IDNave INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Vida INT,
+    Dano INT,
+    Velocidad INT,
+    Cadencia DECIMAL(10,2),
+    Costo DECIMAL(10,2)
+);
+
+CREATE TABLE PowerUps (
+    IDPowerUp INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Descripcion TEXT,
+    Duracion TIME
+);
+
+CREATE TABLE PatronMovimientos (
+    IDPatronMovimiento INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Descripcion TEXT,
+    Velocidad DECIMAL(10,2)
+);
+
+CREATE TABLE AlienFactions (
+    IDAlienFaction INT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    ResistenciaBase DECIMAL(10,2),
+    SpriteBase VARCHAR(100),
+    IDPatronMovimiento INT,
+    CONSTRAINT FK_AlienFactions_PatronMovimientos
+        FOREIGN KEY (IDPatronMovimiento)
+        REFERENCES PatronMovimientos(IDPatronMovimiento)
+);
+
+CREATE TABLE AlienTypes (
+    IDAlienType INT PRIMARY KEY,
+    IDAlienFaction INT NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+    Vida INT,
+    Velocidad INT,
+    Dano INT,
+    PuntosOtorgados INT,
+    VelDisparos DECIMAL(10,2),
+    CONSTRAINT FK_AlienTypes_AlienFactions
+        FOREIGN KEY (IDAlienFaction)
+        REFERENCES AlienFactions(IDAlienFaction)
+);
+
+CREATE TABLE Sesions (
+    IDSession INT PRIMARY KEY,
+    IDPlayer INT NOT NULL,
+    FechaInicio DATETIME,
+    FechaFin DATETIME,
+    EstadoFinal ENUM('Abandonado', 'Victoria', 'Derrota'),
+    CONSTRAINT FK_Sesions_Players
+        FOREIGN KEY (IDPlayer)
+        REFERENCES Players(IDPlayer)
+);
+
+CREATE TABLE RegistrosNiveles (
+    IDRegistroNivel INT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDNivel INT NOT NULL,
+    NivelAlcanzado INT,
+    TiempoInvertido TIME,
+    EnemigosEliminados INT,
+    PuntajeTotal INT,
+    CONSTRAINT FK_RegistrosNiveles_Sesions
+        FOREIGN KEY (IDSession)
+        REFERENCES Sesions(IDSession),
+    CONSTRAINT FK_RegistrosNiveles_Niveles
+        FOREIGN KEY (IDNivel)
+        REFERENCES Niveles(IDNivel)
+);
+
+CREATE TABLE PlayerActions (
+    IDPlayerAction INT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    TimeStamp DATETIME,
+    IDTipoAccion INT NOT NULL,
+    IDMunicion INT,
+    Impactos INT,
+    Fallos INT,
+    CONSTRAINT FK_PlayerActions_Sesions
+        FOREIGN KEY (IDSession)
+        REFERENCES Sesions(IDSession),
+    CONSTRAINT FK_PlayerActions_TiposAcciones
+        FOREIGN KEY (IDTipoAccion)
+        REFERENCES TiposAcciones(IDTipoAccion),
+    CONSTRAINT FK_PlayerActions_Municiones
+        FOREIGN KEY (IDMunicion)
+        REFERENCES Municiones(IDMunicion)
+);
+
+CREATE TABLE NavesPlayers (
+    IDNaveJugador INT PRIMARY KEY,
+    IDNave INT NOT NULL,
+    IDPlayer INT NOT NULL,
+    CONSTRAINT FK_NavesPlayers_Naves
+        FOREIGN KEY (IDNave)
+        REFERENCES Naves(IDNave),
+    CONSTRAINT FK_NavesPlayers_Players
+        FOREIGN KEY (IDPlayer)
+        REFERENCES Players(IDPlayer)
+);
+
+CREATE TABLE PowerUpsUtilizados (
+    PowerUp INT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDPowerUp INT NOT NULL,
+    TimeStamp DATETIME,
+    CONSTRAINT FK_PowerUpsUtilizados_Sesions
+        FOREIGN KEY (IDSession)
+        REFERENCES Sesions(IDSession),
+    CONSTRAINT FK_PowerUpsUtilizados_PowerUps
+        FOREIGN KEY (IDPowerUp)
+        REFERENCES PowerUps(IDPowerUp)
+);
+
+CREATE TABLE ConfigsOleadas (
+    IDConfigOleada INT PRIMARY KEY,
+    TasaSpawn DECIMAL(10,2),
+    CantidadAliens INT,
+    Oleada INT,
+    MultiplicadorDificultad DECIMAL(10,2)
+);
+
+CREATE TABLE ProgresoOleadas (
+    IDProgresoOleada INT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDConfigOleada INT NOT NULL,
+    IDAlienType INT NOT NULL,
+    TimeStampElim DATETIME,
+    PuntosAcumulados INT,
+    CONSTRAINT FK_ProgresoOleadas_Sesions
+        FOREIGN KEY (IDSession)
+        REFERENCES Sesions(IDSession),
+    CONSTRAINT FK_ProgresoOleadas_ConfigsOleadas
+        FOREIGN KEY (IDConfigOleada)
+        REFERENCES ConfigsOleadas(IDConfigOleada),
+    CONSTRAINT FK_ProgresoOleadas_AlienTypes
+        FOREIGN KEY (IDAlienType)
+        REFERENCES AlienTypes(IDAlienType)
+);
+
+CREATE TABLE AliensOleadas (
+    IDAlienOleada INT PRIMARY KEY,
+    IDProgresoOleada INT NOT NULL,
+    IDAlienType INT NOT NULL,
+    NivelAlien INT,
+    CONSTRAINT FK_AliensOleadas_ProgresoOleadas
+        FOREIGN KEY (IDProgresoOleada)
+        REFERENCES ProgresoOleadas(IDProgresoOleada),
+    CONSTRAINT FK_AliensOleadas_AlienTypes
+        FOREIGN KEY (IDAlienType)
+        REFERENCES AlienTypes(IDAlienType)
+);
+
+SELECT 
+    Players.Nombre AS Jugador,
+    Naves.Nombre AS Nave
+FROM Players
+INNER JOIN NavesPlayers
+    ON Players.IDPlayer = NavesPlayers.IDPlayer
+INNER JOIN Naves
+    ON NavesPlayers.IDNave = Naves.IDNave;
+
+SELECT 
+    AlienTypes.Nombre AS Alien,
+    AlienFactions.Nombre AS Faccion
+FROM AlienTypes
+INNER JOIN AlienFactions
+    ON AlienTypes.IDAlienFaction = AlienFactions.IDAlienFaction;
+
+SELECT 
+    Municiones.Nombre AS Municion,
+    Municiones.MultDano AS MultiplicadorDanio,
+    Municiones.Descripcion,
+    Efectos.Nombre AS Efecto,
+    Efectos.DPS,
+    Efectos.Duracion
+FROM Municiones
+LEFT JOIN Efectos
+    ON Municiones.IDEfecto = Efectos.IDEfecto;
+
+SELECT 
+    Players.Nombre AS Jugador,
+    Sesions.IDSession AS Partida,
+    Sesions.FechaInicio,
+    Sesions.FechaFin,
+    Sesions.EstadoFinal
+FROM Players
+INNER JOIN Sesions
+    ON Players.IDPlayer = Sesions.IDPlayer;
+
+SELECT 
+    Players.Nombre AS Jugador,
+    RegistrosNiveles.NivelAlcanzado AS NivelAlcanzado,
+    RegistrosNiveles.TiempoInvertido,
+    RegistrosNiveles.EnemigosEliminados,
+    RegistrosNiveles.PuntajeTotal
+FROM Players
+INNER JOIN Sesions
+    ON Players.IDPlayer = Sesions.IDPlayer
+INNER JOIN RegistrosNiveles
+    ON Sesions.IDSession = RegistrosNiveles.IDSession;
