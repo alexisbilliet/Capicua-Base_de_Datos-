@@ -43,3 +43,12 @@ foreign key (IDCliente) references Clientes(IDCliente),
 MedioDePago enum("A", "B", "C"),
 PrecioTotal float	
 );
+
+select productos.nombre, count(ListasDeProductos.cantidad) as CantidadComprada
+from productos
+inner join ListasDeProductos
+on ListasDeProductos.IDProducto = productos.IDProducto
+group by productos.nombre
+order by CantidadComprada desc
+limit 1;
+
