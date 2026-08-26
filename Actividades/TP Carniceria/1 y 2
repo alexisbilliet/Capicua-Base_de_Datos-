@@ -1,0 +1,8 @@
+1) Verdadero o Falso
+  a) V
+  b) F La tabla siempre debe tener una Primary key, ya que es su identificador unico.
+  c) F No solo se puede usar Where, tambien se pueden usar en otras partes de una consulta como en el select.
+  d) V
+
+2) ¿Cuál es la diferencia entre Where y Having?
+  La diferencia esta en que Having se encarga de filtrar grupos enteros del group by en el por alguna condicion , en cambio Where sirve para filtrar registros especificos de cada tabla.
