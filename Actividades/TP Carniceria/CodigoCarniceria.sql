@@ -113,5 +113,3 @@ select nombre, count(listasdeproductos.cantidad) as CantidadVendida
 from productos
 inner join listasdeproductos on listasdeproductos.IDProducto = productos.IDProducto
 group by productos.IDProducto
-order by CantidadVendida desc
-limit 1 ;
