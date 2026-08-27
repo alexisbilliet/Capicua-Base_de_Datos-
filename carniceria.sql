@@ -75,7 +75,7 @@ insert into MediosDePagos(Nombre) values
 
 insert into Ventas(Precio, IDCarnicero, IDCliente, IDMedioPago, IDProducto, Cantidad ,Fecha ) 
 values
-(1500.50, 1, 1, 1, 1, 1, '2025-05-05'),
+(1500.50, 1, 1, 1, 4, 1, '2025-05-05'),
 (2000.00, 2, 2, 2, 2, 2, '2025-06-04'),
 (1230.50, 1, 3, 3, 1, 3, '2026-09-19');
 
@@ -91,18 +91,19 @@ group by IDCliente
 order by sum(Cantidad);
 
 -- El carnicero que mas clientes tuvo
-select c.Nombre, Count(v.IDVenta)as Clientes_Atendidos
-from Carniceros c 
-inner join Ventas v on c.IDCarnicero = Ventas.IDCarnicero
-group by c.IDCarnicero, c.Nombre
-order by Clientes_Atendidos desc;
+select Car.Nombre, count(V.IDVenta) as Clientes_Atendidos
+from Carniceros Car
+join Ventas v on Car.IDCarnicero = v.IDCarnicero
+group by Car.IDCarnicero, Car.Nombre
+order by Clientes_Atendidos desc
+limit 1;
 
--- El pedido mas caro
-select Clientes.Nombre as Cliente , Ventas.Cantidad as ContenidoPedido, Ca.Nombre as Carnicero
-from Ventas v, Cliente cl, Carnicero ca
-where v.IDCliente = cl.IDCliente and v.IDCarnicero = ca.IDCarnicero
-order by  sum(v.Precio*v.Cantidad) desc
-Limit 1;
+
+-- El pedido/venta mas caro
+select C.Nombre as Nombre_Cliente, v.Cantidad, Car.IDCarnicero  ,v.Precio
+from Ventas as v,Clientes C, Carniceros Car
+where v.Precio =(select max(Precio) from Ventas)
+limit 1;
 
 -- total vendido por categoría
 select P.IDCategoria, sum(P.Precio * v.Cantidad) as total -- select categoria, sum(precio * cantidad) as total
