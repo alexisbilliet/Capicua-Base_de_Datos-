@@ -209,6 +209,7 @@ From Players
 Inner join Sessions
 On Players.IDPlayer = Sessions.IDPlayer;
 
+-- nivel alcanzado de los jugadores
 Select Players.Nombre as NombreJugador, max(RegistrosNiveles.IDNivel) as NivelAlcanzado, sum(RegistrosNiveles.EnemigosEliminados) as EnemigosEliminados, max(RegistrosNiveles.PuntajeTotal) as PuntajeTotal
 From Players
 Inner join Sessions
