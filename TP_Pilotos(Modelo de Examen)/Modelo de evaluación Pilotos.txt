@@ -1,0 +1,39 @@
+﻿Evaluación Base de Datos TEMA 3:
+Criterios a tener en cuenta:
+● Indicar nombre, apellido y curso.
+● El horario es el indicado mediante Classroom, no se recibirá absolutamente nada
+por mail.
+● Leer los enunciados correctamente.
+● En las consultas: copiar el código SQL + adjuntar captura de pantalla de los
+resultados por consola.
+● Adjuntar la base de datos en un archivo aparte.
+● Luego de la corrección, deberán defender la prueba de manera oral.
+
+
+1. Verdadero ó Falso (Justificar las falsas)
+a. Puedo usar un Join adentro de una SubConsulta V
+
+b. Un registro es un conjunto de información de varias entidades. V
+
+c. Un store procedure no tiene parámetros de entrada, únicamente de salida F
+Un Store Procedure si puede tener parámetros de entrada(In) y de salida(Out).
+
+d. Puedo utilizar más de 4 inner joins en una misma consulta.V
+
+2. Responder:
+a. ¿Qué es un Store Procedure?
+Es una función que permite utilizarlo y llamarlo varias veces para usarlo en muchos casos.
+
+b. ¿ Puedo usar Limit 1 con Order by para reemplazar el MAX? Justificar en
+cualquiera de los 2 casos y dar un ejemplo.
+
+Si se puede utilizar cuando quieres tener un registro del valor maximo o alto.
+El limit 1 se puede usar cuando quieres obtener el registro con valor máximo y el Max() cuando solo quieres calcularlo o solo para obtener el valor numerico.
+Ejemplo;
+
+
+Con Max()
+select max(salario) as salario_maximo 
+from empleados;
+
+
