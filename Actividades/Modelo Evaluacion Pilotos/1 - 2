@@ -1,0 +1,14 @@
+1. Verdadero ó Falso (Justificar las falsas)
+  a. Puedo usar un Join adentro de una SubConsulta -V-
+  b. Un registro es un conjunto de información de varias entidades. -F- Un registro guarda informacion sobre una entidad en solitario.
+  c. Un store procedure no tiene parámetros de entrada, únicamente de salida. -F- Un store procedure tiene parametros de entrada, como el ID de un cliente, y tambien tiene parametros de salida.
+  d. Puedo utilizar más de 4 inner joins en una misma consulta. -V-
+2. Responder:
+  a. ¿Qué es un Store Procedure?
+      Un store procedure es un bloque de codigo que se puede ejecutar cuando uno lo necesite.
+  b. ¿Puedo usar Limit 1 con Order by para reemplazar el MAX? Justificar en
+      cualquiera de los 2 casos y dar un ejemplo.
+      Se puede usar un limit 1 y un order by para remplazar el max, pero para un caso en el que
+      tenga que devolver un valor solo, por ejemplo si necesito que me devuelva el pedido mas caro
+      no voy a poder utilizar el limit 1, ya que el pedido puede tener muchos productos, asi que 
+      en conclusion, se puede reemplazar en algunos casos en especifico.
