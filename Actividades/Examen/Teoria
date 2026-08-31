@@ -16,4 +16,10 @@ Esto se hace para poder ver los registros de forma ordenada.  Un ejemplo podria 
     From Productos
     Order by Precio asc;
 
-3. Qué es Right Join De un ejemplo y realice un dibujo. Right Join es una consulta que se usa para unir 2 tablas con los datos que comparten entre ellas, y tambien con todos los datos de la tabla Derecha.
+3. Qué es Right Join De un ejemplo y realice un dibujo. Right Join es una consulta que se usa para unir 2 tablas con los datos que comparten entre ellas,
+y tambien con todos los datos de la tabla Derecha. Un ejemplo podria ser:
+
+    Select Series.Nombre, Temporadas.Nombre
+    From Series
+    Right Join Temporadas.Nombre
+    on Series.IDSerie = Temporadas.IDSerie;
