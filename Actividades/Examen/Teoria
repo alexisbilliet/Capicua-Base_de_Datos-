@@ -10,5 +10,10 @@ B) Teoría:
 1. Explica con tus palabras qué son las funciones agregadas. Las funciones agregadas son unas consultas que sirven para obtener resultados de registros,
 ya sea sumar cierto campo, devolver el maximo, contar la cantidad de registros, obtener el valor minimo, u obtener el promedio de un campo. 
 2. ¿Qué hace Order by? explique con ejemplo. Order By cumple la funcion de ordenar los registros teniendo en cuenta un campo indicado en la misma consulta.
-Esto se hace para poder ver los registros de forma ordenada.  Un ejemplo podria ser
-3. Qué es Right Join De un ejemplo y realice un dibujo.
+Esto se hace para poder ver los registros de forma ordenada.  Un ejemplo podria ser:
+
+    Select Nombre, Precio
+    From Productos
+    Order by Precio asc;
+
+3. Qué es Right Join De un ejemplo y realice un dibujo. Right Join es una consulta que se usa para unir 2 tablas con los datos que comparten entre ellas, y tambien con todos los datos de la tabla Derecha.
