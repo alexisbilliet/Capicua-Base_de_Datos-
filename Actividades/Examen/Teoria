@@ -5,3 +5,10 @@ A) Verdadero o Falso (Justificar las falsas):
 4. Un RIGHT JOIN devuelve SOLAMENTE TODOS los registros de la tabla derecha, aunque no tengan coincidencia en la izquierda. 
     F - El Right Join devuelve los registros que comparten las 2 tablas, y toda la tabla de la derecha.
 5. La cláusula HAVING se usa para filtrar los resultados obtenidos de una función de agregación. F - El Having se usa para filtrar grupos hechos por un Group By.
+
+B) Teoría:
+1. Explica con tus palabras qué son las funciones agregadas. Las funciones agregadas son unas consultas que sirven para obtener resultados de registros,
+ya sea sumar cierto campo, devolver el maximo, contar la cantidad de registros, obtener el valor minimo, u obtener el promedio de un campo. 
+2. ¿Qué hace Order by? explique con ejemplo. Order By cumple la funcion de ordenar los registros teniendo en cuenta un campo indicado en la misma consulta.
+Esto se hace para poder ver los registros de forma ordenada.  Un ejemplo podria ser
+3. Qué es Right Join De un ejemplo y realice un dibujo.
