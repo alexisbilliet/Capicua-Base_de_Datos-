@@ -59,10 +59,10 @@ Insert into Organizaciones(Nombre, Fundacion) Values
 ("Green Energy", 2007),
 ("MQF", 2025);
 
-Insert into Autos(Marca, Año, IDOrganizacion) Values
-("Roll Royce", 1999, 2),
-("Chevrolet", 2023, 1),
-("Nissan", 2026, 3);
+Insert into Autos(Marca,modelo,  Año, IDOrganizacion) Values
+("Roll Royce", "calsic", 1999, 2),
+("Chevrolet", "camaro", 2023, 1),
+("Nissan","frontier", 2026, 3);
 
 Insert into Tecnicos(Nombre, Apellido, IDOrganizacion) Values
 ("Jorge", "Ocorbojon", 2),
