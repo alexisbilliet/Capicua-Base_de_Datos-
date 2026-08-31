@@ -4,4 +4,4 @@ A) Verdadero o Falso (Justificar las falsas):
 3. En la Subconsulta puede utilizar operadores lógicos. V
 4. Un RIGHT JOIN devuelve SOLAMENTE TODOS los registros de la tabla derecha, aunque no tengan coincidencia en la izquierda. 
     F - El Right Join devuelve los registros que comparten las 2 tablas, y toda la tabla de la derecha.
-5. La cláusula HAVING se usa para filtrar los resultados obtenidos de una función de agregación. F - El Having se usa para filtrar grupos hechos por un Group By
+5. La cláusula HAVING se usa para filtrar los resultados obtenidos de una función de agregación. F - El Having se usa para filtrar grupos hechos por un Group By.
