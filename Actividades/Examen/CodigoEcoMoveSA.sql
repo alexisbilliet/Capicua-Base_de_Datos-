@@ -12,6 +12,7 @@ create table Autos
 (
 IDAuto int primary key not null auto_increment,
 Marca varchar(25),
+Modelo varchar(25),
 Año year,
 IDOrganizacion int,
 foreign key (IDOrganizacion) references Organizaciones(IDorganizacion)
@@ -54,7 +55,24 @@ foreign key (IDRevision) references Revisiones(IDRevision)
 
 
 
-select Autos.Marca, Organizacion.Nombre, Tecnico
+select Autos.Marca as Auto, Organizaciones.Nombre as Organizacion, Tecnicos.Nombre as Tecnico
 from Autos
 inner join Organizaciones on Organizaciones.IDOrganizacion = Autos.IDOrganizacion
-inner join 
+inner join Revisiones on Revisiones.IDAuto = Autos.IDAuto
+inner join Tecnicos on Tecnicos.IDTecnico = Revisiones.IDTecnico;
+
+select IDRevision, Fecha, EstadoGeneral, NivelBateria, CostoMantenimiento, TipoMantenimiento
+from revisiones
+where CostoMantenimiento >(select avg(CostoMantenimiento) from revisiones);
+
+select tecnicos.nombre, count(revisiones.IDTecnico) as CantidadRevisiones
+from tecnicos
+inner join revisiones on revisiones.IDTecnico = tecnicos.IDTecnico
+group by tecnicos.IDTecnico;
+
+select autos.marca, count(revisiones.IDAuto) as CantidadRevisiones
+from autos
+inner join revisiones on revisiones.IDAuto = Autos.IDAuto
+group by Autos.IDAuto
+order by CantidadRevisiones asc
+limit 1;
