@@ -1,6 +1,6 @@
-Create database PKM;
--- DROP DATABASE PKM
-use PKM;
+Create database Pokemon;
+-- DROP DATABASE Pokemon
+use Pokemon;
 
 Create table Regiones
 (
@@ -184,4 +184,20 @@ from pokemones p
 inner join entrenadores en on en.IDEntrenador = p.IDEntrenador 
 inner join especies e on e.IDEspecie = p.IDEspecie
 where e.tipoelemento like "%fuego%"
-order by p.nivel desc
+order by p.nivel desc;
+
+
+select p.nombre as Pokemon, entrenadores.nombre as entrenador, ciudades.nombre as ciudad
+from pokemones p
+inner join entrenadores on entrenadores.IDEntrenador = p.IDEntrenador
+inner join ciudades on ciudades.IDCiudad = entrenadores.IDCiudad
+where p.IDEntrenador in (select IDEntrenador from entrenadores inner join ciudades on ciudades.IDCiudad = entrenadores.IDCiudad where ciudades.nombre = "Ciudad Malva");
+
+select nombre, nivel
+from pokemones
+where nivel > (select avg(nivel) from pokemones);
+
+
+select Nombre
+from Pokemones
+where IDEntrenador in (select IDAtacante from Batallas where Ganador = "Atacante") or IDEntrenador in ( select IDDefensor from Batallas where Ganador = "Defensor" );
