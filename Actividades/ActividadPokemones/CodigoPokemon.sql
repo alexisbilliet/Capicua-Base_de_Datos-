@@ -73,13 +73,13 @@ Create table Gimnasios
 );
 Create table Objetos
 (
-	IDObjeto int primary key not null,
+	IDObjeto int primary key not null auto_increment,
     Nombre varchar(25),
     descripcion text
 );
 Create table Equipos
 (
-	IDRegistro int primary key not null,
+	IDRegistro int primary key not null auto_increment,
     IDEntrenador int,
     foreign key (IDEntrenador) references Entrenadores(IDEntrenador),
     IDPokemon int,
@@ -106,6 +106,7 @@ Create table BatallasGimnasios
     foreign key (IDGimnasio) references Gimnasios(IDGimnasio)
 );
 
+
 insert into Regiones(Nombre, Clima) values
 ( "Kanto", "Templado"),
 ("Johto", "Humedo");
@@ -116,32 +117,71 @@ insert into Ciudades(Nombre, Poblacion, IDRegion) values
 
 insert into Entrenadores(Nombre, Edad, IDCIudad) values
 ("Red", 10, 1),
-("Gold", 11, 2);
+("Gold", 11, 2),
+("Blaine", 58, 1),
+("Pegaso", 20, 2);
 
 insert into Especies(Nombre, NumPokeDex, TipoElemento, IDRegion) values
-("Charmander", 4, "Fuego", 1),
-("Charmeleon", 5, "Fuego", 2);
+("Bulbasaur", 1, "Planta-Veneno", 1),
+("Ivysaur", 2, "Planta-Veneno", 1),
+("Pichu", 172, "Electrico", 2),
+("Mewtwo", 150, "Psiquico", 1),
+("Magmar", 126, "Fuego", 1),
+("Pidgey", 16, "Volador-Normal", 2);
 
 insert into Pokemones(Nombre, Nivel, IDEntrenador, IDEspecie) values
-("Pepe", 4, 1, 1),
-("Pepe", 20, 2, 2);
+("Ranota", 27, 1, 2),
+("Rata", 8, 2, 3),
+("DiosTodoPoderoso", 99, 1, 4),
+("Inferno", 23, 3, 5),
+("Reinger", 6, 4, 6);
+
 
 insert into Evoluciones(IDFaseNueva, IDFasePrevia) values
 (2, 1);
+
 
 insert into HistorialEvoluciones(Fecha, MetodoEvolucion, IDPokemon, IDEvolucion) values
 ("2026-08-03", "Nivel", 2, 1);
 
 insert into Gimnasios(Nombre, TipoElemento, IDLider, IDCiudad) values
-("Gimnasio de Isla Canela", "Fuego", 1, 1),
-("Gimnasio de Ciudad Malva", "Volador", 2, 2);
+("Gimnasio de Isla Canela", "Fuego", 3, 1),
+("Gimnasio de Ciudad Malva", "Volador", 4, 2);
 
-insert into Equipos(IDEquipo, ObjetoEquipado, IDPokemon) values
-(1, "Restos", 2), (1, "Restos", 1);
+insert into Objetos(Nombre, Descripcion) values
+("Restos", "Cura 1/16 de los Puntos de Salud (PS) totales del Pokémon que lo lleva equipado al final de cada turno."),
+("Piedra Eterna", "impide que el Pokémon que la lleva equipada evolucione.");
 
+insert into Equipos(IDEntrenador, IDPokemon, IDObjeto) values
+(1, 1, 1), (1, 3, null), (2, 2, 2), (3, 4, null), (4, 5, 1);
+
+insert into Batallas(Fecha, Ganador, IDAtacante, IDDefensor) values
+("2026-09-14", "Atacante", 1, 2),
+("2026-09-16", "Defensor", 4, 3),
+("2026-09-19", "Atacante", 2, 4),
+("2026-09-20", "Defensor", 2, 3);
+
+insert into BatallasGimnasios(IDBatalla, IDGimnasio) values
+(3, 2), (4, 1);
 
 
 
 select e.nombre, e.edad, c.nombre as ciudad
 from entrenadores e
-inner join ciudades c on e.IDCiudad = c.IDCiudad
+inner join ciudades c on e.IDCiudad = c.IDCiudad;
+
+
+select nombre, tipoelemento
+from especies;
+
+select p.nombre, p.Nivel, e.Nombre as Especie
+from pokemones p
+inner join especies e on e.IDEspecie = p.IDEspecie
+where p.nivel > 50;
+
+select p.nombre, p.Nivel, e.Nombre as Especie, en.nombre
+from pokemones p
+inner join entrenadores en on en.IDEntrenador = p.IDEntrenador 
+inner join especies e on e.IDEspecie = p.IDEspecie
+where e.tipoelemento like "%fuego%"
+order by p.nivel desc
