@@ -201,3 +201,24 @@ where nivel > (select avg(nivel) from pokemones);
 select Nombre
 from Pokemones
 where IDEntrenador in (select IDAtacante from Batallas where Ganador = "Atacante") or IDEntrenador in ( select IDDefensor from Batallas where Ganador = "Defensor" );
+
+DELIMITER //
+CREATE PROCEDURE SubirDeNivel(
+IN NombreE Varchar(50)
+)
+BEGIN
+update pokemones set nivel = nivel + 1 where IDEntrenador = (select IDEntrenador from entrenadores where nombre = NombreE);
+END //
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE RegistrarBatalla(
+in fecha date,
+in ganador enum("atacante", "defensor"),
+IN Atacante Varchar(50),
+IN Defensor Varchar(50)
+)
+BEGIN
+insert into batallas(fecha, ganador, IDAtacante, IDDefensor) values
+(fecha, ganador, (select IDEntrenador from entrenadores where nombre=Atacante),(select IDEntrenador from entrenadores where nombre=Defensor) );
+END //
+DELIMITER ;
