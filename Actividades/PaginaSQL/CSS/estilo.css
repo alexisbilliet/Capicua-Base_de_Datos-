@@ -1,0 +1,64 @@
+body {
+  font-family: 'Times New Roman', sans-serif !important;
+  background-image: url("../img/Fondo.jpg") !important;
+
+}
+.navbar-nav{
+    margin: 0 auto;
+    justify-content: space-around;
+}
+.navbar-nav .nav-link {
+  padding-right: 40px !important;
+  padding-left: 40px !important;
+}
+.navbar-nav {
+  width: 190px;
+  justify-content: space-around;
+}
+.presentacioncontainer{
+    background-color:black;
+    margin: 1% auto;
+    width: 50%;
+    text-align: center;
+    border-radius: 20px;
+    padding:0.1px;
+}
+.presentacioncard{
+    background-color: white;
+    width: 95%;
+    margin: 1% auto;
+    border-radius: 10px;
+}
+#textpresentacion{
+    color:black;
+}
+.navbar {
+  background-color: black !important; /* fondo negro */
+}
+.mis-cards{
+    background-color:black;
+    
+    margin: 1% auto;
+    width: 99% !important;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 20px;
+}
+.card{
+    background-color: white;
+    color: black;
+    width: 30%;
+    text-align: center;
+    margin: 2% auto;
+    font-size: large;
+    border-radius: 10px;
+}
+#Titulocard{
+    padding-top: 10px;
+    font-size: xx-large;
+}
+#Textocard{
+    padding: 5%;
+    line-height: 190%;
+    font-size: 110%;
+}
