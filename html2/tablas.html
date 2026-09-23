@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tablas - SQL</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">SQL para principiantes</a>
+
+            <div>
+                <a class="text-white me-3" href="basesdedatos.html">Bases de datos</a>
+                <a class="text-white me-3" href="tablas.html">Tablas</a>
+                <a class="text-white" href="primarykey.html">Primary Key</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+
+        <h1>Tablas</h1>
+
+        <p class="mt-3">
+            Las tablas se utilizan para organizar la informacion
+            dentro de una base de datos.
+        </p>
+
+        <div class="alert alert-success mt-4">
+            Una tabla esta formada por filas y columnas.
+        </div>
+
+        <h2 class="mt-4">Filas y columnas</h2>
+
+        <p>
+            Las columnas representan los diferentes datos que queremos
+            guardar, mientras que las filas representan los registros.
+        </p>
+
+        <div class="card mt-4">
+            <div class="card-body">
+
+                <h5 class="card-title">Ejemplo</h5>
+
+                <p class="card-text">
+                    Una tabla de alumnos puede tener columnas como
+                    Nombre, Apellido y Edad.
+                </p>
+
+                <p class="card-text">
+                    Cada alumno ocuparia una fila diferente.
+                </p>
+
+            </div>
+        </div>
+
+        <h2 class="mt-4">Ejemplo de tabla</h2>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Juan</td>
+                    <td>Perez</td>
+                    <td>17</td>
+                </tr>
+
+                <tr>
+                    <td>Lucas</td>
+                    <td>Gomez</td>
+                    <td>18</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+
+</html>
