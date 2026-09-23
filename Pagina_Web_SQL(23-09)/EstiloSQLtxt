@@ -1,0 +1,26 @@
+body {
+  color: #175659;
+  background-color: #15b1ba;
+}
+
+
+code {
+  display: block;
+  background-color: #191427;
+  color: #06dec1;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  margin-top: 6px;
+}
+
+/* Tarjetas */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+.list-group-item {
+  border-color: #f0f0f0;
+}

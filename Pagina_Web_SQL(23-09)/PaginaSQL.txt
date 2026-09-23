@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conceptos de SQL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="EstiloSQL.css">
+  </head>
+  <body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#">BD & SQL Guía</a>
+          <input class="form-control me-2" type="search" id="inputBuscador" placeholder="Buscar concepto o comando..." aria-label="Buscar">
+      </div>
+    </nav>
+
+    <div class="container my-5">
+      <header class="mb-4 text-center">
+        <h1 class="display-5 fw-bold text-primary">-- Guía sobre SQL y BD --</h1>
+        <p class="lead text-muted">Un poco de lo que vimos para repasar.</p>
+      </header>
+
+      <div class="d-flex justify-content-center mb-5">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle fw-bold shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menú de Temas
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#concepto-bd">¿Qué es una BD?</a></li>
+            <li><a class="dropdown-item" href="#que-es-sql">¿Qué es SQL?</a></li>
+            <li><a class="dropdown-item" href="#normalizacion">Normalización (1FN, 2FN, 3FN)</a></li>
+            <li><a class="dropdown-item" href="#claves">Claves Primarias y Foráneas</a></li>
+            <li><a class="dropdown-item" href="#funciones-agregacion">Funciones de Agregación</a></li>
+            <li><a class="dropdown-item" href="#comandos-sql">Sentencias y Comandos SQL</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row g-4" id="contenedorTarjetas">
+        <div class="col-md-6 tarjeta-busqueda" id="concepto-bd">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+              <h5 class="card-title text-primary fw-bold mb-1">¿Qué es una base de datos?</h5>
+              <h6 class="card-subtitle mb-3 text-body-secondary small">Concepto teórico</h6>
+              <p class="card-text">Es un lugar donde se puede almacenar información de manera ordenada y con un contexto.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda" id="que-es-sql">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+              <h5 class="card-title text-primary fw-bold mb-1">El lenguaje que se va a utilizar (SQL)</h5>
+              <h6 class="card-subtitle mb-3 text-body-secondary small">Concepto teórico</h6>
+              <p class="card-text"><strong>SQL</strong> (Structured Query Language) es el lenguaje estándar para interactuar con bases de datos relacionales, permitiendo consultar, insertar, actualizar y eliminar datos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-dark text-white fw-bold py-3">
+              Pasos para diseñar una Base de Datos:
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item py-3">1. Crear el <strong>D.E.R.</strong> (Diagrama Entidad-Relación).</li>
+              <li class="list-group-item py-3">2. <strong>Normalizar</strong> el diagrama (1FN, 2FN, 3FN) para evitar duplicidad.</li>
+              <li class="list-group-item py-3">3. Elaborar el <strong>Diccionario de Datos</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 tarjeta-busqueda">
+          <div class="card tarjeta-diccionario h-100 shadow-sm border-0">
+            <div class="card-header fw-bold text-uppercase py-3">Diccionario de Datos</div>
+            <div class="card-body p-4">
+              <h5 class="card-title fw-bold">¿Qué es?</h5>
+              <p class="card-text">Es una lista organizada de todos los datos que describe el contenido y el significado de los datos: nombres, descripción, longitud, contenido, claves y tipo de cada campo.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda" id="claves">
+          <div class="card h-10 shadow-sm border-0">
+            <div class="card-body p-5">
+              <h5 class="card-title text-primary fw-bold mb-4">Claves Primarias y Foráneas</h5>
+              <p class="card-text mb-4">
+                <strong>Primary Key (PK):</strong> Identificador único e irrepetible para cada fila/registro dentro de una tabla (ej. <em>id_usuario</em>).
+              </p>
+              <p class="card-text">
+                <strong>Foreign Key (FK):</strong> Campo que hace referencia a la Primary Key de otra tabla, estableciendo una relación entre ambas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda">
+          <div class="card h-10 shadow-sm border-0">
+            <div class="card-body p-5">
+              <h5 class="card-title text-primary fw-bold mb-4">Tipos de Datos Frecuentes</h5>
+              <ul class="list-group-flush mb-0 lh-lg">
+                <li><strong>INT / BIGINT:</strong> Números enteros.</li>
+                <li><strong>VARCHAR(n):</strong> Texto de longitud variable.</li>
+                <li><strong>DATE:</strong> Para fechas completas.(año-mes-dia)</li>
+                <li><strong>DATETIME:</strong> Fechas y horas exactas.</li>
+                <li><strong>TIME:</strong> Duraciones.</li>
+                <li><strong>TEXT:</strong> Para descripciones.</li>
+                <li><strong>ENUM():</strong> Para varias opciones.EJ:ENUM('Valor1', 'Valor2', 'Valor3').</li>
+                <li><strong>DECIMAL:</strong> Números con decimales.</li>
+                <li><strong>CHAR:</strong>Almacena texto de longitud fija..</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda" id="normalizacion">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+              <h5 class="card-title text-primary fw-bold mb-1">Normalización de Bases de Datos</h5>
+              <h6 class="card-subtitle mb-3 text-body-secondary small">¿Qué es y para qué sirve?</h6>
+              <p class="card-text">Es el proceso de organizar las tablas para <strong>evitar repetir datos y no generar redudancia</strong> y evitar errores al guardar o borrar información.</p>
+              
+              <ul class="list-group list-group-flush mt-3">
+                <li class="list-group-item px-0">
+                  <strong>1FN (Primera Forma Normal):</strong> No repitas listas en un solo casillero. Cada celda debe tener un solo dato atómico (único).
+                </li>
+                <li class="list-group-item px-0">
+                  <strong>2FN (Segunda Forma Normal):</strong> Tiene que cumplir con la 1FN y Todos los campos de la tabla deben depender de la Clave Primaria (PK) completa, no solo de una parte.
+                </li>
+                <li class="list-group-item px-0">
+                  <strong>3FN (Tercera Forma Normal):</strong> Tiene que cumplir 2FN y Ningún campo que no sea clave debe depender de otro campo que tampoco sea clave. 
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 tarjeta-busqueda" id="funciones-agregacion">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+              <h5 class="card-title text-primary fw-bold mb-1">Funciones de Agregación</h5>
+              <h6 class="card-subtitle mb-3 text-body-secondary small">Hacer cálculos con varias filas a la vez</h6>
+              <p class="card-text">Sirven para resumir datos de una columna y devolver un solo resultado:</p>
+              
+              <ul class="list-group-flush mb-0 lh-lg">
+                <li><strong>COUNT():</strong> Cuenta cuántas filas hay. <br><code>SELECT COUNT(*) FROM Alumnos;</code></li>
+                <li><strong>SUM():</strong> Suma los valores de una columna. <br><code>SELECT SUM(precio) FROM Ventas;</code></li>
+                <li><strong>AVG():</strong> Saca el promedio de los valores. <br><code>SELECT AVG(nota) FROM Examenes;</code></li>
+                <li><strong>MIN():</strong> Devuelve el valor más bajo. <br><code>SELECT MIN(edad) FROM Jugadores;</code></li>
+                <li><strong>MAX():</strong> Devuelve el valor más alto. <br><code>SELECT MAX(precio) FROM Productos;</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-12 tarjeta-busqueda" id="comandos-sql">
+          <div class="card seccion-sentencias shadow-sm border-0 mt-3">
+            <div class="p-3 bg-primary text-white rounded-top">
+              <h4 class="card-title mb-0 text-center fw-bold">Sentencias y Cláusulas Principales de SQL</h4>
+            </div>
+            <div class="card-body p-4">
+              <p class="card-text text-muted mb-4">Ejemplos de comandos para manipulación, filtrado y unión de datos:</p>
+              
+              <ul class="list-group list-group-flush">
+                
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">SELECT:</div>
+                  <div class="text-secondary mb-2">Consulta registros de una tabla.</div>
+                  <code>SELECT * FROM Vehiculos;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">INSERT INTO:</div>
+                  <div class="text-secondary mb-2">Agrega un nuevo registro.</div>
+                  <code>INSERT INTO Vehiculos (marca, color) VALUES ('Toyota', 'Azul');</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">TRUNCATE TABLE:</div>
+                  <div class="text-secondary mb-2">Elimina por completo todos los registros que hay en la tabla.</div>
+                  <code>TRUNCATE TABLE empleado;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">DELETE:</div>
+                  <div class="text-secondary mb-2">Elimina registros.</div>
+                  <code>DELETE FROM Vehiculos WHERE id = 1;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">WHERE (con AND, OR):</div>
+                  <div class="text-secondary mb-2">Filtra resultados según varias condiciones.</div>
+                  <code>SELECT * FROM Vehiculos WHERE anio > 2020 AND (color = 'Rojo' OR  marca = 'Ford');</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">ORDER BY:</div>
+                  <div class="text-secondary mb-2">Ordena los resultados de forma ascendente (ASC) o descendente (DESC).</div>
+                  <code>SELECT * FROM Vehiculos ORDER BY anio DESC;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">INNER JOIN:</div>
+                  <div class="text-secondary mb-2">Trae solo las coincidencias entre ambas tablas.</div>
+                  <code>SELECT V.modelo, C.nombre FROM Vehiculos V INNER JOIN Clientes C ON V.cliente_id = C.id;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">LEFT JOIN:</div>
+                  <div class="text-secondary mb-2">Trae todos los registros de la tabla izquierda aunque no coincidan en la derecha.</div>
+                  <code>SELECT V.modelo, C.nombre FROM Vehiculos V LEFT JOIN Clientes C ON V.cliente_id = C.id;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">RIGHT JOIN:</div>
+                  <div class="text-secondary mb-2">Trae todos los registros de la tabla derecha aunque no coincidan en la izquierda.</div>
+                  <code>SELECT V.modelo, C.nombre FROM Vehiculos V RIGHT JOIN Clientes C ON V.cliente_id = C.id;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">GROUP BY y HAVING:</div>
+                  <div class="text-secondary mb-2">Agrupa datos y aplica un filtro a esos grupos acumulados.(Sin GROUP BY no hay Having).EL HAVING sirve para filtrar grupos enteros. </div>
+                  <code>SELECT marca, COUNT(*) FROM Vehiculos GROUP BY marca HAVING COUNT(*) > 5;</code>
+                </li>
+
+                <li class="list-group-item py-3 border-bottom item-busqueda">
+                  <div class="fw-bold text-dark mb-1">SUBCONSULTAS (Subqueries):</div>
+                  <div class="text-secondary mb-2">Una consulta dentro de otra consulta.</div>
+                  <code>SELECT * FROM Vehiculos WHERE precio > (SELECT AVG(precio) FROM Vehiculos);</code>
+                </li>
+
+                <li class="list-group-item py-3 item-busqueda">
+                  <div class="fw-bold text-dark mb-1">STORED PROCEDURE (Procedimiento Almacenado):</div>
+                  <div class="text-secondary mb-2">Es una funcion que permite utilizarlo y llamarlo variad veces.</div>
+                  <code>DELIMITER //
+CREATE PROCEDURE nombre_procedimiento(IN parametro TIPO)
+BEGIN
+-- Cuerpo del procedimiento (SQL)
+SELECT * FROM tabla;
+END //
+DELIMITER ;</code>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
