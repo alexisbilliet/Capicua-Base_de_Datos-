@@ -1,0 +1,114 @@
+body {
+  font-family: 'Times New Roman', sans-serif !important;
+  background-image: url("../img/Fondo.jpg") !important;
+
+}
+.navbar-nav{
+    margin: 0 auto;
+    justify-content: space-around;
+}
+.navbar-nav .nav-link {
+  padding-right: 40px !important;
+  padding-left: 40px !important;
+}
+.navbar-nav {
+  width: 190px;
+  justify-content: space-around;
+}
+.presentacioncontainer{
+    background-color:black;
+    margin: 1% auto;
+    width: 50%;
+    text-align: center;
+    border-radius: 20px;
+    padding:0.1px;
+}
+.presentacioncard{
+    background-color: white;
+    width: 95%;
+    margin: 1% auto;
+    border-radius: 10px;
+}
+#textpresentacion{
+    color:black;
+}
+.navbar {
+  background-color: black !important; /* fondo negro */
+}
+.mis-cards{
+    background-color:black;
+    
+    margin: 1% auto;
+    width: 99% !important;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 20px;
+}
+.card{
+    background-color: white;
+    color: black;
+    width: 30%;
+    text-align: center;
+    margin: 2% auto;
+    font-size: large;
+    border-radius: 10px;
+}
+#Titulocard{
+    padding-top: 10px;
+    font-size: xx-large;
+}
+#Textocard{
+    padding: 5%;
+    line-height: 190%;
+    font-size: 110%;
+}
+.footer {
+  background-color: rgb(24, 23, 23); 
+  color: #f6f7f8;
+  padding-top: 20px;
+  margin-top: 40px;
+}
+
+.containerfooter {
+  display: flex;
+  padding: 10px;
+  justify-content: space-evenly; 
+  align-items: flex-start; 
+}
+
+.seccionfooter {
+  flex: 1;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.seccionfooter h5 {
+  text-transform: uppercase;
+  margin-bottom: 10px auto ;
+  font-size: 16px;
+}
+
+.seccionfooter ul {
+  list-style: none;
+  padding: 0;
+}
+
+.seccionfooter ul li {
+  margin-bottom: 5px auto;
+}
+
+.seccionfooter a {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+.seccionfooter a:hover {
+  text-decoration: underline;
+}
+
+.abajo {
+  background-color: #343a40; /* similar a bg-secondary */
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./CSS/estilo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Home</title>
+</head>
+
+<body>
+      
+
+    <!--NAVBAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="./index.html">
+        <img src="./img/sql-logo.png" alt="SQL Logo" width="60" height="40">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- DER -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              DER
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./entidades_campos.html">Entidades y Campos</a></li>
+              <li><a class="dropdown-item" href="./normalizacion.html">Normalización</a></li>
+              <li><a class="dropdown-item" href="./relaciones.html">Relaciones entre Tablas</a></li>
+            </ul>
+          </li>
+          <!-- Sintaxis -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Sintaxis
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./ddl.html">Definicion De Datos</a></li>
+              <li><a class="dropdown-item" href="./dml.html">Manipulacion De Datos</a></li>
+              <li><a class="dropdown-item" href="./restricciones_tipos.html">Restricciones y Tipos de Datos</a></li>
+            </ul>
+          </li>
+          <!-- Consultas -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Consultas
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./consultas_basicas.html">Consultas Básicas</a></li>
+              <li><a class="dropdown-item" href="./orden_agrupacion.html">Orden y Agrupación</a></li>
+              <li><a class="dropdown-item" href="./joins.html">Joins</a></li>
+              <li><a class="dropdown-item" href="./funciones_agregacion.html">Funciones de Agregación</a></li>
+              <li><a class="dropdown-item" href="./subconsultas.html">Subconsultas</a></li>
+            </ul>
+          </li>
+        </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar en SQL" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!--NAVBAR-->
+    <!-- titulo -->
+<div class="presentacioncontainer">
+        <div class="presentacioncard">
+            <h1 id="textpresentacion">
+             SQL
+            </h1>
+            <h2 id="textpresentacion">
+                Aqui podras aprender un poco lo que es SQL
+            </h2>
+        </div>
+    </div>
+    <!-- titulo -->
+    <!-- lascartas -->
+    <div class="mis-cards">
+        <div class="card">
+            <h2 id="Titulocard">¿Que es SQL?</h2>
+            <p id="Textocard">
+                SQL (Structured Query Language) es el lenguaje que se utiliza para comunicarse con las bases de datos.  
+Permite crear, modificar y consultar información de manera ordenada y eficiente.  
+Con SQL podés acceder a grandes volúmenes de datos, filtrarlos, analizarlos y obtener exactamente la información que necesitás.  
+Es una herramienta fundamental en el mundo de la informática, el desarrollo web y la gestión de datos.
+            </p>
+            <img src="./img/sql-app-logo.png" alt="Logo SQL" width="120" style="margin-top:10px auto; margin: 1px auto;">
+        </div>
+        <div class="card">
+            <h2 id="Titulocard">Lo que vas a aprender</h2>
+            <p id="Textocard">
+                  En esta sección vas a conocer la teoría fundamental detrás del lenguaje SQL.  
+Aprenderás cómo se estructuran las bases de datos relacionales y qué papel cumplen las tablas, filas y columnas dentro de ellas.  
+Verás los distintos tipos de datos que puede manejar SQL y cómo se definen las relaciones entre entidades mediante claves primarias y foráneas.  
+También se explicará la sintaxis general de los comandos más importantes, como <code>CREATE</code>, <code>INSERT</code>, <code>UPDATE</code> y <code>DELETE</code>, junto con las reglas que determinan su funcionamiento.  
+Por último, comprenderás los principios de normalización, integridad referencial y organización lógica de la información, que son la base de todo sistema de gestión de bases de datos.
+            </p>
+        </div>
+        <div class="card">
+            <h2 id="Titulocard">Como se organiza la pagina</h2>
+            <p id="Textocard">
+                El sitio está dividido en secciones para facilitar tu aprendizaje:  
+                <br>
+                <br>-DER-<br> vas a ver cómo se diseñan las relaciones entre tablas.  
+                <br>-Sintaxis-<br> vas a aprender la estructura de los comandos SQL.  
+                <br>-Consultas-<br> Vas a aprender el como devolver informacion de la BD.  
+                <br>
+                <br>Cada parte está pensada para que avances de forma clara y progresiva, entendiendo cómo funciona SQL desde cero.
+            </p>
+        </div>
+    </div>
+    <!-- lascartas -->
+     <script>
+    document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const query = document.querySelector("input[type='search']").value.toLowerCase();
+
+    const paginas = {
+      "entidades": "entidades_campos.html",
+      "campos": "entidades_campos.html",
+      "normalizacion": "normalizacion.html",
+      "relaciones": "relaciones.html",
+      "relaciones entre tablas": "relaciones.html",
+      "ddl": "ddl.html",
+      "definicion de datos": "ddl.html",
+      "dml": "dml.html",
+      "manipulacion de datos": "dml.html",
+      "restricciones": "restricciones_tipos.html",
+      "restricciones y tipos de datos": "restricciones_tipos.html",
+      "tipos de datos": "restricciones_tipos.html",
+      "consultas": "consultas_basicas.html",
+      "consultas basicas":"consultas_basicas.html",
+      "orden": "orden_agrupacion.html",
+      "orden y agrupacion": "orden_agrupacion.html",
+      "agrupacion": "orden_agrupacion.html",
+      "joins": "joins.html",
+      "funciones de agregacion": "funciones_agregacion.html",
+      "funciones": "funciones_agregacion.html",
+      "subconsultas": "subconsultas.html"
+    };
+
+    if (paginas[query]) {
+      window.location.href = paginas[query]; // redirige a la página
+    } else {
+      alert("No se encontró la sección: " + query);
+    }
+  });
+</script>
+
+</body>
+<footer class="footer">
+  <div class="containerfooter">
+    <div class="seccionfooter">
+      <h5>Sobre este sitio</h5>
+      <p>
+        Este sitio fue creado por Alexis Billiet sin fines de lucro <br>
+        cualquier error puede ser notificado al a traves del gmail especificado.
+      </p>
+    </div>
+    <div class="seccionfooter">
+      <h5>Enlaces Importantes</h5>
+      <ul>
+        <li><a href="https://www.github.com/alexisbilliet">Github</a></li>
+        <li><a href="https://www.instagram.com/alee.bltt/">Instagram</a></li>
+        <li><a href="https://www.youtube.com/watch?v=QDia3e12czc">Como hacer Dinero Rapido</a></li>
+      </ul>
+    </div>
+    <div class="seccionfooter">
+      <h5>Contacto</h5>
+      <ul>
+        <li>Gmail: alexis.billietet32@gmail.com</li>
+        <li>Tel: +54 9 11 6708 9209</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="abajo">
+    © 2026 Todos los derechos reservados | Escuela Tecnica N°32
+  </div>
+</footer>
+<!-- FOOTER -->
+</html>
