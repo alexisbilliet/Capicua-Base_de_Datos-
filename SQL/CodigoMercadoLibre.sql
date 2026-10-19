@@ -19,7 +19,7 @@ create table Usuarios (
     Correo varchar(50),
     Telefono int,
     Nombre varchar(50),
-    Contraseña varchar(50),
+    Contrasena varchar(50),
     Direccion varchar(50),
     Ciudad varchar(50)
 );
@@ -139,3 +139,19 @@ create table Resenas (
     foreign key (IDUsuario) references Usuarios(IDUsuario),
     foreign key (IDPublicacion) references Publicaciones(IDPublicacion)
 );
+
+DELIMITER //
+CREATE PROCEDURE NuevoUsuario(IN correo Varchar(50), IN telefono int, IN nombre varchar(50), IN contrasena varchar(50), IN direccion varchar(50), IN ciudad varchar(50) )
+	BEGIN
+		insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad) values
+		(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad);
+	END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE ValidarSesion(IN correo VARCHAR(50), IN pass
+VARCHAR(255))
+BEGIN
+SELECT IDUsuario, Nombre FROM usuarios WHERE Correo = correo AND Contrasena = pass;
+END;
