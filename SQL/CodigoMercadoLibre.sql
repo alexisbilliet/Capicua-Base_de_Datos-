@@ -141,11 +141,18 @@ create table Resenas (
 );
 
 DELIMITER //
-CREATE PROCEDURE NuevoUsuario(IN correo Varchar(50), IN telefono int, IN nombre varchar(50), IN contrasena varchar(50), IN direccion varchar(50), IN ciudad varchar(50) )
+CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono int, IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50) )
 	BEGIN
-		insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad) values
-		(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad);
-	END //
+		if exists(select Correo from usuarios where Correo=xcorreo) then
+            select "1" as resultado;
+		elseif exists (select Telefono from usuarios where Telefono=xtelefono)then
+            select "2" as resultado;
+		else
+			insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad) values (xCorreo, xTelefono, xNombre, xContrasena, xDireccion, xCiudad);
+            select "3" as resultado,
+            IDUsuario as id from usuarios WHERE Correo = xcorreo;
+		end if;
+    END//
 DELIMITER ;
 
 
