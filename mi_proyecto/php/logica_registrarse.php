@@ -7,7 +7,8 @@ $contrasena = $_POST['contrasena'];
 $telefono = $_POST['telefono'];
 $direccion = $_POST['direccion'];
 $ciudad = $_POST['ciudad'];
-$sql = "CALL NuevoUsuario('$correo','$telefono','$nombre',  '$contrasena',  '$direccion', '$ciudad')";
+$apellido = $_POST['apellido'];
+$sql = "CALL NuevoUsuario('$correo','$telefono','$nombre',  '$contrasena',  '$direccion', '$ciudad', '$apellido')";
 $res = mysqli_query($conexion, $sql);
 $fila = mysqli_fetch_assoc($res);
 if ($fila['resultado'] == '3') {
