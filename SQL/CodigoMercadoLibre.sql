@@ -21,7 +21,8 @@ create table Usuarios (
     Nombre varchar(50),
     Contrasena varchar(50),
     Direccion varchar(50),
-    Ciudad varchar(50)
+    Ciudad varchar(50),
+    Apellido varchar(50)
 );
 
 create table Tarjetas (
@@ -141,14 +142,14 @@ create table Resenas (
 );
 
 DELIMITER //
-CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono Varchar(50), IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50) )
+CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono Varchar(50), IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50), IN xapellido varchar(50))
 	BEGIN
 		if exists(select Correo from usuarios where Correo=xcorreo) then
             select "1" as resultado;
 		elseif exists (select Telefono from usuarios where Telefono=xtelefono)then
             select "2" as resultado;
 		else
-			insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad) values (xCorreo, xTelefono, xNombre, xContrasena, xDireccion, xCiudad);
+			insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad, Apellido) values (xCorreo, xTelefono, xNombre, xContrasena, xDireccion, xCiudad, xapellido);
             select "3" as resultado,
             IDUsuario as id from usuarios WHERE Correo = xcorreo;
 		end if;
