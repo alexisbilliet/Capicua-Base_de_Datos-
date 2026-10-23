@@ -70,7 +70,7 @@
             </div>
             <div class="nombreapellido">
               <label for="nombre" class="form-label">Apellido</label>
-              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Example: Rodriguez" autocomplete="family-name" required>
+              <input type="text" class="form-control" id="nombre" name="apellido" placeholder="Example: Rodriguez" autocomplete="family-name" required>
             </div>
          </div>
             
