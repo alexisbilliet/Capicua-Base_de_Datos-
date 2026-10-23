@@ -66,38 +66,38 @@
         <div class="form-field" id="divNA">
             <div class="nombreapellido">
               <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Example: Jorge" autocomplete="given-name" required>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Example: Jorge" autocomplete="given-name" maxlength="50"required>
             </div>
             <div class="nombreapellido">
               <label for="nombre" class="form-label">Apellido</label>
-              <input type="text" class="form-control" id="nombre" name="apellido" placeholder="Example: Rodriguez" autocomplete="family-name" required>
+              <input type="text" class="form-control" id="nombre" name="apellido" placeholder="Example: Rodriguez" autocomplete="family-name" maxlength="50"required>
             </div>
          </div>
             
 
         <div class="form-field">
             <label for="correo" class="form-label">Direccion de Correo Electronico</label>
-            <input type="email" class="form-control" id="correo" name="correo" placeholder="name@example.com" autocomplete="email" required>
+            <input type="email" class="form-control" id="correo" name="correo" placeholder="name@example.com" autocomplete="email" maxlength="50" required>
         </div>
 
         <div class="form-field">
             <label for="contrasena" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Example: 12345" autocomplete="new-password" required>
+            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Example: 12345" autocomplete="new-password" maxlength="50" required>
         </div>
 
         <div class="form-field">
             <label for="telefono" class="form-label">Telefono</label>
-            <input class="form-control" id="telefono" name="telefono" placeholder="Example: 11 6708 9209" autocomplete="tel" required>
+            <input class="form-control" id="telefono" name="telefono" placeholder="Example: 11 6708 9209" autocomplete="tel" rmaxlength="50" equired>
         </div>
 
         <div class="form-field">
             <label for="direccion" class="form-label">Direccion</label>
-            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Example: Av. San Martin 6678" autocomplete="street-address" required>
+            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Example: Av. San Martin 6678" autocomplete="street-address"  maxlength="50" required>
         </div>
 
         <div class="form-field">
             <label for="ciudad" class="form-label">Ciudad</label>
-            <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Example: Buenos Aires" autocomplete="address-level2" required>
+            <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Example: Buenos Aires" autocomplete="address-level2" maxlength="50" required>
         </div>
 
         <div class="text-center">
