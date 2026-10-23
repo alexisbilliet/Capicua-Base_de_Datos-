@@ -17,7 +17,7 @@ create table Detalles (
 create table Usuarios (
     IDUsuario int auto_increment primary key not null,
     Correo varchar(50),
-    Telefono int,
+    Telefono varchar(50),
     Nombre varchar(50),
     Contrasena varchar(50),
     Direccion varchar(50),
@@ -141,7 +141,7 @@ create table Resenas (
 );
 
 DELIMITER //
-CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono int, IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50) )
+CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono Varchar(50), IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50) )
 	BEGIN
 		if exists(select Correo from usuarios where Correo=xcorreo) then
             select "1" as resultado;
