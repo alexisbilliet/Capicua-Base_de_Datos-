@@ -94,7 +94,7 @@ include 'php/auth.php';
                 <img src="./img/perfil.png" id="fotoperfil1" alt="Perfil">
 
                 <div class="nombre-correo">
-                    <p><?php echo htmlspecialchars($row['Nombre']); ?></p>
+                    <p><?php echo htmlspecialchars($row['Nombre']); ?> <?php echo htmlspecialchars($row['Apellido']); ?></p>
                     <p><?php echo htmlspecialchars($row['Correo']); ?></p>
                 </div>
 
