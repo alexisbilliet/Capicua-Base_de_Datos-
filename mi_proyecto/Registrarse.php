@@ -63,10 +63,17 @@
     </div>
 
     <form class= "containerpadre" action="php/logica_registrarse.php" method="POST">
-        <div class="form-field">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Example: Jorge" autocomplete="name" required>
-        </div>
+        <div class="form-field" id="divNA">
+            <div class="nombreapellido">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Example: Jorge" autocomplete="given-name" required>
+            </div>
+            <div class="nombreapellido">
+              <label for="nombre" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="nombre" name="apellido" placeholder="Example: Rodriguez" autocomplete="family-name" required>
+            </div>
+         </div>
+            
 
         <div class="form-field">
             <label for="correo" class="form-label">Direccion de Correo Electronico</label>
@@ -80,7 +87,7 @@
 
         <div class="form-field">
             <label for="telefono" class="form-label">Telefono</label>
-            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Example: 11 6708 9209" autocomplete="tel" required>
+            <input class="form-control" id="telefono" name="telefono" placeholder="Example: 11 6708 9209" autocomplete="tel" required>
         </div>
 
         <div class="form-field">
