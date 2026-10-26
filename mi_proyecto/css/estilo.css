@@ -62,11 +62,12 @@
     width: 60%;
 }
 
-
-/* Contenedor del perfil */
-
-
-/* Foto, nombre y correo */
+#divNA{
+    display:flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: space-between;
+}
 .datos-usuario {
     display: flex;
     align-items: center;
@@ -102,20 +103,4 @@
     font-weight: bold;
     font-size: 170%;
 }
-/* Adaptacion para celulares */
-@media (max-width: 600px) {
-    .perfil-layout {
-        width: 92%;
-        margin-top: 30px;
-    }
 
-    .dato-cuenta {
-        padding: 15px 18px;
-        font-size: 15px;
-        overflow-wrap: anywhere;
-    }
-
-    .nombre-correo p {
-        font-size: 15px;
-    }
-}
