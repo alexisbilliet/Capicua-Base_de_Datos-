@@ -1,8 +1,8 @@
 #Sesion{
-    margin-right: 1% auto;
     background-color: black;
     color: rgb(255, 204, 51);
-    border-radius: 20px;
+    border-radius: 19px;
+    white-space: nowrap;
 }
 #Registrarse{
     background-color: white;
@@ -103,4 +103,71 @@
     font-weight: bold;
     font-size: 170%;
 }
+@media (max-width: 768px) {
+#Sesion{
+    text-align: center;
+    background-color: black;
+    color: rgb(255, 204, 51);
+    border-radius: 20px;
+    padding: 8px 16px !important;
+    width: 100%;
+}
+#Registrarse{
+    text-align: center;
+    background-color: white;
+    color: black;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0px;
+}
+  /* Reajuste del contenedor principal en celulares */
+  .ContainerMiCuenta {
+    width: 90% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    margin-top: 5%;
+  }
 
+  /* Ajuste de la imagen del título */
+  #imgCuenta {
+    width: 50% !important; /* Más grande en celular para que sea legible */
+    display: block;
+    margin-top: 3% !important;
+  }
+
+  /* Bloque superior de la foto y nombre */
+  .datos-usuario {
+    flex-direction: column; /* Apila la foto arriba del nombre */
+    margin-bottom: 5%;
+  }
+
+  /* Tamaño de la foto de perfil en celular */
+  #fotoperfil1 {
+    width: 30% !important;
+  }
+
+  /* Reducción de textos muy grandes para pantallas chicas */
+  .nombre-correo p {
+    font-size: 140% !important; 
+    margin-left: 0% !important;
+  }
+
+  .dato-cuenta {
+    border-radius: 20px; /* Bordes un poco menos pronunciados en pantallas chicas */
+    padding: 3% 4%; /* Más espacio interno para tocar fácilmente con el dedo */
+    margin-bottom: 4%;
+  }
+
+  #datotitulo {
+    font-size: 110% !important;
+    display: inline-block; /* Pone el título arriba del dato */
+    margin-bottom: 2px;
+  }
+
+  #datodato {
+    font-size: 120% !important;
+    display: block;
+    word-break: break-word; /* Evita que textos largos como direcciones rompan el diseño */
+  }
+}
