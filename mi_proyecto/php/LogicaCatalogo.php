@@ -10,7 +10,7 @@ $promedio  = $_GET['promedio']  ?? '';
 $constock  = $_GET['stock']     ?? '';
 
 // ---- Armar la consulta según los filtros ----
-$where  = "p.Estado = 'Activa'";
+$where  = "p.Estado IN ('Activa', 'SinStock')";
 $having = "";
 
 if ($buscar != '') {
