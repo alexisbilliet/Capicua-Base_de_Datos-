@@ -152,7 +152,7 @@ CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono Varchar(50), 
 		else
 			insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad, Apellido, imagen) values (xCorreo, xTelefono, xNombre, xContrasena, xDireccion, xCiudad, xapellido, ximagen);
             select "3" as resultado,
-            IDUsuario as id from usuarios WHERE Correo = xcorreo;
+            IDUsuario as id, imagen  from usuarios WHERE Correo = xcorreo;
 		end if;
     END//
 DELIMITER ;
