@@ -164,55 +164,71 @@ Create table AliensOleadas (
    foreign key (IDAlienType) references AliensTypes(IDAlienType)
 );
 
--- El nombre de jugador y el de la nave que posee
-Select
-Players.Nombre as NombreJugador,
-Naves.Nombre as NombreNave
-From Players
-Inner join NavesPlayers
-On Players.IDPlayer = NavesPlayers.IDPlayer
-Inner join Naves
-On NavesPlayers.IDNave = Naves.IDNave;
+-- Jugadores y sus naves
+DELIMITER //
+
+CREATE PROCEDURE JugadoresYSusNaves(in xnombre varchar(50))
+BEGIN
+    select Players.Nombre as NombreJugador, Naves.Nombre as NombreNave
+    from Players
+    inner join NavesPlayers on Players.IDPlayer = NavesPlayers.IDPlayer
+    inner join Naves on NavesPlayers.IDNave = Naves.IDNave
+    where Players.Nombre = xnombre;
+END //
+
+DELIMITER ;
 
 
--- El nombre del alien y la facción a la que pertenece
+-- Aliens y sus facciones
+DELIMITER //
 
-Select 
-AliensTypes.Nombre as NombreAlien,
-AliensFactions.Nombre as NombreFaccion
-From AliensTypes
-Inner join AliensFactions
-On AliensTypes.IDAlienFaction = AliensFactions.IDAlienFaction;
+CREATE PROCEDURE AliensYSusFacciones()
+BEGIN
+    select AliensTypes.Nombre as NombreAlien, AliensFactions.Nombre as NombreFaccion
+    from AliensTypes
+    inner join AliensFactions on AliensTypes.IDAlienFaction = AliensFactions.IDAlienFaction;
+END //
 
--- La munición y sus características
+DELIMITER ;
 
-Select
-Municiones.Nombre as NombreMunicion,
-Municiones.multidano as DanoMuniciones,
-Municiones.Descripcion as DescripcionMuniciones,
-Efectos.Nombre as NombreEfecto,
-Efectos.Dps,
-Efectos.Duracion
-From Municiones
-Inner join Efectos
-On Municiones.IDEfecto = Efectos.IDEfecto;
 
--- Las partidas de cada uno de los jugadores
+-- Municiones y sus características
+DELIMITER //
 
-Select
-Players.Nombre as jugador,
-Sessions.IDSession as Partida,
-Sessions.FechaInicio,
-Sessions.FechaFin,
-Sessions.EstadoFinal
-From Players
-Inner join Sessions
-On Players.IDPlayer = Sessions.IDPlayer;
+CREATE PROCEDURE MunicionesYSusCaracteristicas()
+BEGIN
+    select Municiones.Nombre as NombreMunicion, Municiones.multidano as DanoMuniciones, Municiones.Descripcion as DescripcionMuniciones, Efectos.Nombre as NombreEfecto, Efectos.Dps,Efectos.Duracion
+    from Municiones
+    inner join Efectos on Municiones.IDEfecto = Efectos.IDEfecto;
+END //
 
--- nivel alcanzado de los jugadores
-Select Players.Nombre as NombreJugador, max(RegistrosNiveles.IDNivel) as NivelAlcanzado, sum(RegistrosNiveles.EnemigosEliminados) as EnemigosEliminados, max(RegistrosNiveles.PuntajeTotal) as PuntajeTotal
-From Players
-Inner join Sessions
-On Players.IDPlayer = Sessions.IDPlayer
-Inner join RegistrosNiveles
-On Sessions.IDSession = RegistrosNiveles.IDSession;
+DELIMITER ;
+
+
+-- Partidas de cada jugador
+DELIMITER //
+
+CREATE PROCEDURE PartidasDeCadaJugador(in xnombre varchar(50))
+BEGIN
+    select Players.Nombre as jugador, Sessions.IDSession as Partida, Sessions.FechaInicio, Sessions.FechaFin, Sessions.EstadoFinal
+    from Players
+    inner join Sessions on Players.IDPlayer = Sessions.IDPlayer
+    where Players.Nombre = xnombre;
+END //
+
+DELIMITER ;
+
+
+-- Nivel alcanzado de los jugadores
+DELIMITER //
+
+CREATE PROCEDURE NivelAlcanzadoDeLosJugadores()
+BEGIN
+    select Players.Nombre as NombreJugador, MAX(RegistrosNiveles.IDNivel) as NivelAlcanzado,SUM(RegistrosNiveles.EnemigosEliminados) as EnemigosEliminados, MAX(RegistrosNiveles.PuntajeTotal) as PuntajeTotal
+    from Players
+    inner join Sessions on Players.IDPlayer = Sessions.IDPlayer
+    inner join RegistrosNiveles on Sessions.IDSession = RegistrosNiveles.IDSession
+    group by Players.IDPlayer, Players.Nombre;
+END //
+
+DELIMITER ;
