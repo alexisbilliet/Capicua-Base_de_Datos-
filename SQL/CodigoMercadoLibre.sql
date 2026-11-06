@@ -161,5 +161,5 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE ValidarSesion(IN correo VARCHAR(50), IN pass VARCHAR(255))
 BEGIN
-SELECT IDUsuario, Nombre FROM usuarios WHERE Correo = correo AND Contrasena = pass;
+SELECT IDUsuario, Nombre, imagen FROM usuarios WHERE Correo = correo AND Contrasena = pass;
 END;
