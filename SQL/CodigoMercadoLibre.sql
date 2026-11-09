@@ -163,3 +163,34 @@ CREATE PROCEDURE ValidarSesion(IN xcorreo VARCHAR(50), IN xpass VARCHAR(255))
 BEGIN
 SELECT IDUsuario, Nombre, imagen FROM usuarios WHERE Correo = xcorreo AND Contrasena = xpass;
 END;
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE EliminarCuenta(IN xIDusuario int)
+BEGIN
+     delete from usuarios where IDUsuario = xIDusuario;
+END;
+DELIMITER ;
+
+USE MercadoLibre;
+ 
+DROP PROCEDURE IF EXISTS ActualizarUsuario;
+ 
+DELIMITER //
+CREATE PROCEDURE ActualizarUsuario( IN xid INT,  IN xcorreo VARCHAR(50), IN xtelefono VARCHAR(50), IN xnombre VARCHAR(50), IN xcontrasena VARCHAR(50), IN xdireccion VARCHAR(50), IN xciudad VARCHAR(50), IN xapellido VARCHAR(50), IN ximagen VARCHAR(255))
+BEGIN
+
+    if exists (SELECT 1 FROM usuarios WHERE Correo = xcorreo AND IDUsuario <> xid) THEN
+        SELECT "1" AS resultado;
+        
+    ELSEIF EXISTS (SELECT 1 FROM usuarios WHERE Telefono = xtelefono AND IDUsuario <> xid) THEN
+        SELECT "2" AS resultado;
+    ELSE
+        UPDATE usuarios SET Correo = xcorreo, Telefono = xtelefono, Nombre = xnombre, Apellido   = xapellido, Direccion = xdireccion, Ciudad = xciudad,  Contrasena = IF(xcontrasena IS NULL OR xcontrasena = '', Contrasena, xcontrasena), imagen = IF(ximagen IS NULL OR ximagen = '', imagen, ximagen)
+        WHERE IDUsuario = xid;
+
+        SELECT "3" AS resultado, IDUsuario AS id, Correo, imagen
+        FROM usuarios
+        WHERE IDUsuario = xid;
+    END IF;
+END//
+DELIMITER ;
