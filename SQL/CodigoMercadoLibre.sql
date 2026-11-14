@@ -8,11 +8,7 @@ create table Categorias (
     Descripcion text
 );
 
-create table Detalles (
-    IDDetalle int auto_increment primary key not null,
-    Titulo varchar(50),
-    Descripcion text
-);
+
 
 create table Usuarios (
     IDUsuario int auto_increment primary key not null,
@@ -62,24 +58,28 @@ create table Envios (
 create table Productos (
     IDProducto int auto_increment primary key not null,
     Nombre varchar(50) not null,
-    Color varchar(50),
     IDCategoria int,
-    IDDetalle int,
-    foreign key (IDCategoria) references Categorias(IDCategoria),
-    foreign key (IDDetalle) references Detalles(IDDetalle)
+    foreign key (IDCategoria) references Categorias(IDCategoria)
 );
-
+create table Detalles (
+    IDDetalle int auto_increment primary key not null,
+    Titulo varchar(50),
+    Descripcion text,
+    IDProducto int,
+    foreign key (IDProducto) references Productos(IDProducto)
+);
 create table Publicaciones (
     IDPublicacion int auto_increment primary key not null,
     Fecha date,
     IDUsuario int,
     Descripcion text,
     IDProducto int,
-    Precio decimal,
+    Precio decimal(10,2),
     Stock int,
     Estado enum("Activa", "Eliminada", "SinStock"),
     foreign key (IDUsuario) references Usuarios(IDUsuario),
-    foreign key (IDProducto) references Productos(IDProducto)
+    foreign key (IDProducto) references Productos(IDProducto),
+    imagen varchar(255)
 );
 
 create table Carritos (
@@ -143,54 +143,52 @@ create table Resenas (
 );
 
 DELIMITER //
-CREATE PROCEDURE NuevoUsuario(IN xcorreo Varchar(50), IN xtelefono Varchar(50), IN xnombre varchar(50), IN xcontrasena varchar(50), IN xdireccion varchar(50), IN xciudad varchar(50), IN xapellido varchar(50), IN ximagen varchar(255))
-	BEGIN
-		if exists(select Correo from usuarios where Correo=xcorreo) then
-            select "1" as resultado;
-		elseif exists (select Telefono from usuarios where Telefono=xtelefono)then
-            select "2" as resultado;
-		else
-			insert into usuarios(Correo, Telefono, Nombre, Contrasena, Direccion, Ciudad, Apellido, imagen) values (xCorreo, xTelefono, xNombre, xContrasena, xDireccion, xCiudad, xapellido, ximagen);
-            select "3" as resultado,
-            IDUsuario as id, imagen  from usuarios WHERE Correo = xcorreo;
-		end if;
-    END//
+create procedure nuevousuario(in xcorreo varchar(50), in xtelefono varchar(50), in xnombre varchar(50), in xcontrasena varchar(50), in xdireccion varchar(50), in xciudad varchar(50), in xapellido varchar(50), in ximagen varchar(255))
+begin
+    if exists(select correo from usuarios where correo = xcorreo) then
+        select "1" as resultado;
+    elseif exists (select telefono from usuarios where telefono = xtelefono) then
+        select "2" as resultado;
+    else
+        insert into usuarios(correo, telefono, nombre, contrasena, direccion, ciudad, apellido, imagen) values (xcorreo, xtelefono, xnombre, xcontrasena, xdireccion, xciudad, xapellido, ximagen);
+        select "3" as resultado,
+        IDUsuario as id, imagen from usuarios where correo = xcorreo;
+    end if;
+end//
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE ValidarSesion(IN xcorreo VARCHAR(50), IN xpass VARCHAR(255))
-BEGIN
-SELECT IDUsuario, Nombre, imagen FROM usuarios WHERE Correo = xcorreo AND Contrasena = xpass;
-END;
-DELIMITER ;
-DELIMITER //
-CREATE PROCEDURE EliminarCuenta(IN xIDusuario int)
-BEGIN
-     delete from usuarios where IDUsuario = xIDusuario;
-END;
+create procedure validarsesion(in xcorreo varchar(50), in xpass varchar(255))
+begin
+    select IDUsuario, nombre, imagen from usuarios where correo = xcorreo and contrasena = xpass;
+end//
 DELIMITER ;
 
-USE MercadoLibre;
- 
-DROP PROCEDURE IF EXISTS ActualizarUsuario;
- 
+
 DELIMITER //
-CREATE PROCEDURE ActualizarUsuario( IN xid INT,  IN xcorreo VARCHAR(50), IN xtelefono VARCHAR(50), IN xnombre VARCHAR(50), IN xcontrasena VARCHAR(50), IN xdireccion VARCHAR(50), IN xciudad VARCHAR(50), IN xapellido VARCHAR(50), IN ximagen VARCHAR(255))
-BEGIN
+create procedure eliminarcuenta(in xidusuario int)
+begin
+    delete from usuarios where IDUsuario = xidusuario;
+end //
+DELIMITER ;
 
-    if exists (SELECT 1 FROM usuarios WHERE Correo = xcorreo AND IDUsuario <> xid) THEN
-        SELECT "1" AS resultado;
-        
-    ELSEIF EXISTS (SELECT 1 FROM usuarios WHERE Telefono = xtelefono AND IDUsuario <> xid) THEN
-        SELECT "2" AS resultado;
-    ELSE
-        UPDATE usuarios SET Correo = xcorreo, Telefono = xtelefono, Nombre = xnombre, Apellido   = xapellido, Direccion = xdireccion, Ciudad = xciudad,  Contrasena = IF(xcontrasena IS NULL OR xcontrasena = '', Contrasena, xcontrasena), imagen = IF(ximagen IS NULL OR ximagen = '', imagen, ximagen)
-        WHERE IDUsuario = xid;
 
-        SELECT "3" AS resultado, IDUsuario AS id, Correo, imagen
-        FROM usuarios
-        WHERE IDUsuario = xid;
-    END IF;
-END//
+DELIMITER //
+create procedure actualizarusuario(in xid int, in xcorreo varchar(50), in xtelefono varchar(50), in xnombre varchar(50), in xcontrasena varchar(50), in xdireccion varchar(50), in xciudad varchar(50), in xapellido varchar(50), in ximagen varchar(255))
+begin
+    if exists (select 1 from usuarios where correo = xcorreo and idusuario <> xid) then
+        select "1" as resultado;
+
+    elseif exists (select 1 from usuarios where telefono = xtelefono and idusuario <> xid) then
+        select "2" as resultado;
+    else
+        update usuarios set correo = xcorreo, telefono = xtelefono, nombre = xnombre, apellido = xapellido, direccion = xdireccion, ciudad = xciudad, contrasena = if(xcontrasena is null or xcontrasena = '', contrasena, xcontrasena), imagen = if(ximagen is null or ximagen = '', imagen, ximagen)
+        where IDUsuario = xid;
+
+        select "3" as resultado, idusuario as id, correo, imagen
+        from usuarios
+        where IDUsuario = xid;
+    end if;
+end//
 DELIMITER ;
