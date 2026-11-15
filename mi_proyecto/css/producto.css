@@ -1,0 +1,115 @@
+/* Página Producto (Producto.php) */
+
+.producto-layout {
+    width: 80%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+/* FOTO + INFO */
+.producto-arriba {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+}
+
+.producto-foto {
+    flex: 1 1 300px;
+    max-width: 420px;
+}
+.producto-foto img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+}
+
+.producto-info {
+    flex: 1 1 260px;
+    max-width: 330px;
+}
+.producto-info h1 {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+.producto-sub {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 14px;
+}
+
+.producto-gris {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 8px;
+}
+.producto-precio {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.btn-producto {
+    display: block;
+    width: 100%;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 9px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.btn-producto:hover {
+    background-color: #222;
+}
+
+.producto-caract {
+    font-size: 15px;
+    font-weight: bold;
+    color: #777;
+    margin: 18px 0 6px;
+}
+.producto-info ul {
+    font-size: 13px;
+    font-weight: 600;
+    color: #777;
+    padding-left: 22px;
+}
+
+/* DESCRIPCION */
+.producto-descripcion {
+    text-align: left;
+    max-width: 80%;
+    margin-top: 30px;
+}
+.producto-descripcion h2 {
+    font-size: 24px;
+    font-weight: normal;
+    color: #777;
+    margin-bottom: 18px;
+}
+.producto-descripcion p {
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: 0.3px;
+    color: #666;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+    .producto-layout {
+        width: 92%;
+    }
+    .producto-foto,
+    .producto-info {
+        max-width: 100%;
+    }
+}

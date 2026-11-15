@@ -1,0 +1,135 @@
+#imgCuenta{
+    margin-top: 2% !important;
+    width:20% !important; 
+}
+.ContainerMiCuenta{
+    margin-top: 2%;
+    margin-left: 10% ;
+    width: 90%;
+}
+.datos-usuario {
+  width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 2%;
+    margin-bottom: 2%;
+ 
+}
+ 
+#fotoperfil1 {
+    width: 170px; 
+    height: 170px;
+    object-fit: cover;
+}
+ 
+.nombre-correo p {
+  display:flex;
+    font-size: 200%;
+    font-weight: bold;
+    margin: 1% auto;
+}
+ 
+.dato-cuenta {
+    background-color: #d9d9d9;
+    border: 1px solid black;
+    border-radius: 40px;
+    padding: 1.5% 2%;
+    margin-bottom: 2%;
+    width:70%;
+ 
+}
+#datodato{
+    font-size: 150%;
+}
+#datotitulo{
+    font-weight: bold;
+    font-size: 170%;
+}
+ 
+.perfilinfo {
+   flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: 2%;
+}
+ 
+@media (max-width: 768px) {
+ 
+  .ContainerMiCuenta {
+    width: 90% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    margin-top: 5%;
+  }
+ 
+  #imgCuenta {
+    width: 50% !important;
+    display: block;
+    margin-top: 3% !important;
+  }
+ 
+  .datos-usuario {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 5%;
+  }
+ 
+  .perfilinfo {
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+ 
+  #fotoperfil1 {
+    width: 120px !important;
+    height: 120px;
+  }
+ 
+  .nombre-correo {
+    max-width: 100%;
+    min-width: 0;
+  }
+ 
+  .nombre-correo p {
+    display: block;
+    font-size: 130% !important;
+    margin: 4px 0 !important;
+    text-align: center;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+ 
+  #btnrojo {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+ 
+  #btnrojo img {
+    width: 40px;
+    height: auto;
+  }
+ 
+  .dato-cuenta {
+    width: 100%;
+    border-radius: 20px;
+    padding: 3% 4%;
+    margin-bottom: 4%;
+  }
+ 
+  #datotitulo {
+    font-size: 120% !important;
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+ 
+  #datodato {
+    font-size: 115% !important;
+    word-break: break-word;
+  }
+}
