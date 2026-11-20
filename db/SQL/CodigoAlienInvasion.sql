@@ -1,81 +1,58 @@
-Create database Alien_Invasion;
+create database Alien_Invasion;
 -- drop database Alien_Invasion
-Use Alien_Invasion;
+use Alien_Invasion;
 
-Create table Niveles (
+create table Niveles (
     IDNivel int primary key auto_increment not null,
-    MultiDano decimal (10,2),
+    Nivel int not null unique,
+    MultiDano decimal(10,2),
     MultiVel decimal(10,2),
     Multivida decimal(10,2),
     PuntosNecesarios int
 );
 
-Create table TiposAcciones (
+create table TiposAcciones (
     IDTipoAccion int primary key auto_increment not null,
-    Nombre varchar (25),
+    Nombre varchar(25),
     Descripcion text
 );
 
-Create table Efectos (
+create table Efectos (
     IDEfecto int primary key auto_increment not null,
-    Nombre varchar (50),
+    Nombre varchar(50),
     DPS int,
     Duracion int,
     Descripcion text
 );
 
-Create table Municiones (
-    IDMunicion int primary key auto_increment not null, 
-    Nombre varchar (50),
-    MultiDano decimal (10,2),
+create table Municiones (
+    IDMunicion int primary key auto_increment not null,
+    Nombre varchar(50),
+    MultiDano decimal(10,2),
     Descripcion text,
     IDEfecto int,
     foreign key (IDEfecto) references Efectos(IDEfecto)
 );
 
-Create table Players (
-    IDPlayer int primary key auto_increment not null,
-    Nombre varchar (50),
-    Dinero decimal(10,2),
-    Edad int
-);
-
-Create table Naves (
-    IDNave int primary key auto_increment not null, 
-    Nombre varchar (50),
-    Vida int,
-    Dano int,
-    Velocidad int,
-    Cadencia decimal(10,2),
-    Costo decimal (10,2)
-);
-
-Create table PowerUps (
-    IDPowerUp int primary key auto_increment not null, 
-    Nombre varchar (50),
-    Descripcion text,
-    Duracion time
-);
-
-Create table PatronMovimientos (
+create table PatronMovimientos (
     IDPatronMovimiento int primary key auto_increment not null,
-    Nombre varchar (50),
+    Nombre varchar(50),
     Descripcion text,
     Velocidad decimal(10,2)
 );
 
-Create table AliensFactions (
+create table AliensFactions (
     IDAlienFaction int primary key auto_increment not null,
-    Nombre varchar (50),
+    Nombre varchar(50),
     ResistenciaBase decimal(10,2),
-    SpriteBase varchar (100),
+    SpriteBase varchar(100),
     IDPatronMovimiento int,
     foreign key (IDPatronMovimiento) references PatronMovimientos(IDPatronMovimiento)
 );
 
-Create table AliensTypes (
+create table AliensTypes (
     IDAlienType int primary key auto_increment not null,
-    Nombre varchar (50),
+    Nombre varchar(50),
     Vida int,
     Velocidad int,
     Dano int,
@@ -85,150 +62,159 @@ Create table AliensTypes (
     foreign key (IDAlienFaction) references AliensFactions(IDAlienFaction)
 );
 
-Create table Sessions (
+create table Players (
+    IDPlayer int primary key auto_increment not null,
+    Nombre varchar(50) not null unique,
+    Dinero decimal(10,2),
+    Edad int
+);
+
+create table Naves (
+    IDNave int primary key auto_increment not null,
+    Nombre varchar(50),
+    Vida int,
+    Dano int,
+    Velocidad int,
+    Cadencia decimal(10,2),
+    Costo decimal(10,2)
+);
+
+create table PowerUps (
+    IDPowerUp int primary key auto_increment not null,
+    Nombre varchar(50),
+    Descripcion text,
+    Duracion time
+);
+
+create table Sessions (
     IDSession int primary key auto_increment not null,
     FechaInicio datetime,
     FechaFin datetime,
-    EstadoFinal enum("Abandonado", "Victoria", "Derrota"),
+    EstadoFinal enum('Abandonado', 'Victoria', 'Derrota'),
     IDPlayer int,
     foreign key (IDPlayer) references Players(IDPlayer)
 );
 
-Create table RegistrosNiveles (
+create table RegistrosNiveles (
     IDRegistroNivel int primary key auto_increment not null,
     TiempoInvertido time,
     EnemigosEliminados int,
     PuntajeTotal int,
     IDSession int,
-    foreign key(IDSession) references Sessions(IDSession),
-	IDNivel int,
+    foreign key (IDSession) references Sessions(IDSession),
+    IDNivel int,
     foreign key (IDNivel) references Niveles(IDNivel)
 );
 
-Create table PlayersAction (
+create table PlayersAction (
     IDPlayerAction int primary key auto_increment not null,
     Time_Stamp datetime,
     Impactos int,
     Fallos int,
     IDSession int,
     foreign key (IDSession) references Sessions(IDSession),
-	IDTipoAccion int,
+    IDTipoAccion int,
     foreign key (IDTipoAccion) references TiposAcciones(IDTipoAccion),
-	IDMunicion int,
+    IDMunicion int,
     foreign key (IDMunicion) references Municiones(IDMunicion)
 );
 
-Create table NavesPlayers (
+create table NavesPlayers (
     IDNaveJugador int primary key auto_increment not null,
     IDPlayer int,
     IDNave int,
     foreign key (IDNave) references Naves(IDNave),
-    foreign key (IDPlayer) references Players(IDPlayer)
+    foreign key (IDPlayer) references Players(IDPlayer),
+    unique (IDPlayer, IDNave)
 );
 
-Create table PowerUpsUtilizados (
+create table PowerUpsUtilizados (
     IDPowerUpUtilizado int primary key auto_increment not null,
-    Time_Stamp DATETIME,
+    Time_Stamp datetime,
     IDSession int,
-    foreign key (IDsession) references Sessions(IDSession),
+    foreign key (IDSession) references Sessions(IDSession),
     IDPowerUp int,
-    foreign key (IDPowerUp) references 	PowerUps(IDPowerUp)
+    foreign key (IDPowerUp) references PowerUps(IDPowerUp)
 );
 
-Create table ConfigOleadas (
+create table ConfigOleadas (
     IDConfigOleada int primary key auto_increment not null,
-    TasaSpawn decimal (10,2),
+    TasaSpawn decimal(10,2),
     CantidadDeAliens int,
     Oleada int,
-    MultiplicadorDificultad decimal (10,2)
+    MultiplicadorDificultad decimal(10,2)
 );
 
-Create table ProgresoOleadas (
+create table ProgresoOleadas (
     IDProgresoOleada int primary key auto_increment not null,
     TimeStampElim datetime,
     PuntosAcumulados int,
     IDSession int,
-    foreign key(IDsession) references Sessions(IDSession),
-	IDConfigOleada int,
+    foreign key (IDSession) references Sessions(IDSession),
+    IDConfigOleada int,
     foreign key (IDConfigOleada) references ConfigOleadas(IDConfigOleada),
-	IDAlienType int,
+    IDAlienType int,
     foreign key (IDAlienType) references AliensTypes(IDAlienType)
 );
 
-Create table AliensOleadas (
+create table AliensOleadas (
     IDAlienOleada int primary key auto_increment not null,
     NivelAlien int,
     IDProgresoOleada int,
-    foreign key (IDProgresoOleada) references progresoOleadas(IDProgresoOleada),
+    foreign key (IDProgresoOleada) references ProgresoOleadas(IDProgresoOleada),
     IDAlienType int,
-   foreign key (IDAlienType) references AliensTypes(IDAlienType)
+    foreign key (IDAlienType) references AliensTypes(IDAlienType)
 );
 
--- Jugadores y sus naves
-DELIMITER //
+insert into Niveles (Nivel, MultiDano, MultiVel, Multivida, PuntosNecesarios) values
+(1, 1.00, 1.00, 1.00, 0),
+(2, 1.15, 1.10, 1.25, 500),
+(3, 1.30, 1.20, 1.50, 1200),
+(4, 1.45, 1.30, 1.75, 2200),
+(5, 1.60, 1.40, 2.00, 3500),
+(6, 1.75, 1.50, 2.25, 5000),
+(7, 1.90, 1.60, 2.50, 7000),
+(8, 2.05, 1.70, 2.75, 9500),
+(9, 2.20, 1.80, 3.00, 12500),
+(10, 2.35, 1.90, 3.25, 16000);
 
-CREATE PROCEDURE JugadoresYSusNaves(in xnombre varchar(50))
-BEGIN
-    select Players.Nombre as NombreJugador, Naves.Nombre as NombreNave
-    from Players
-    inner join NavesPlayers on Players.IDPlayer = NavesPlayers.IDPlayer
-    inner join Naves on NavesPlayers.IDNave = Naves.IDNave
-    where Players.Nombre = xnombre;
-END //
+insert into TiposAcciones (Nombre, Descripcion) values
+('Disparo', 'Disparo realizado por el jugador'),
+('Impacto', 'Disparo que impacto contra un enemigo'),
+('Fallo', 'Disparo que no impacto contra un enemigo');
 
-DELIMITER ;
+insert into Efectos (Nombre, DPS, Duracion, Descripcion) values
+('Sin efecto', 0, 0, 'Municion sin efecto especial');
 
+insert into Municiones (Nombre, MultiDano, Descripcion, IDEfecto) values
+('Normal', 1.00, 'Municion basica del jugador', 1);
 
--- Aliens y sus facciones
-DELIMITER //
+insert into PatronMovimientos (Nombre, Descripcion, Velocidad) values
+('Formacion', 'Movimiento coordinado en formacion', 1.00),
+('Descenso', 'Movimiento de avance y descenso', 1.20),
+('Erratico', 'Movimiento irregular', 1.40);
 
-CREATE PROCEDURE AliensYSusFacciones()
-BEGIN
-    select AliensTypes.Nombre as NombreAlien, AliensFactions.Nombre as NombreFaccion
-    from AliensTypes
-    inner join AliensFactions on AliensTypes.IDAlienFaction = AliensFactions.IDAlienFaction;
-END //
+insert into AliensFactions (Nombre, ResistenciaBase, SpriteBase, IDPatronMovimiento) values
+('Exploradores', 1.00, 'alien.png', 1),
+('Soldados', 1.50, 'alien.png', 2),
+('Destructores', 2.00, 'alien.png', 3);
 
-DELIMITER ;
+insert into AliensTypes (Nombre, Vida, Velocidad, Dano, PuntosOtorgados, VelDisparos, IDAlienFaction) values
+('Alien 1', 10, 40, 10, 10, 4.00, 1),
+('Alien 2', 20, 55, 15, 20, 5.00, 2),
+('Alien 3', 30, 70, 25, 30, 6.00, 3);
 
+insert into Naves (Nombre, Vida, Dano, Velocidad, Cadencia, Costo) values
+('Cazador', 3, 10, 250, 0.35, 0.00),
+('Fortaleza', 5, 7, 180, 0.50, 0.00),
+('Relampago', 2, 14, 350, 0.20, 0.00);
 
--- Municiones y sus características
-DELIMITER //
+insert into PowerUps (Nombre, Descripcion, Duracion) values
+('Disparo rapido', 'Aumenta temporalmente la cadencia de disparo', '00:00:10'),
+('Escudo', 'Reduce temporalmente el dano recibido', '00:00:10'),
+('Dano aumentado', 'Aumenta temporalmente el dano del jugador', '00:00:10');
 
-CREATE PROCEDURE MunicionesYSusCaracteristicas()
-BEGIN
-    select Municiones.Nombre as NombreMunicion, Municiones.multidano as DanoMuniciones, Municiones.Descripcion as DescripcionMuniciones, Efectos.Nombre as NombreEfecto, Efectos.Dps,Efectos.Duracion
-    from Municiones
-    inner join Efectos on Municiones.IDEfecto = Efectos.IDEfecto;
-END //
-
-DELIMITER ;
-
-
--- Partidas de cada jugador
-DELIMITER //
-
-CREATE PROCEDURE PartidasDeCadaJugador(in xnombre varchar(50))
-BEGIN
-    select Players.Nombre as jugador, Sessions.IDSession as Partida, Sessions.FechaInicio, Sessions.FechaFin, Sessions.EstadoFinal
-    from Players
-    inner join Sessions on Players.IDPlayer = Sessions.IDPlayer
-    where Players.Nombre = xnombre;
-END //
-
-DELIMITER ;
-
-
--- Nivel alcanzado de los jugadores
-DELIMITER //
-
-CREATE PROCEDURE NivelAlcanzadoDeLosJugadores()
-BEGIN
-    select Players.Nombre as NombreJugador, MAX(RegistrosNiveles.IDNivel) as NivelAlcanzado,SUM(RegistrosNiveles.EnemigosEliminados) as EnemigosEliminados, MAX(RegistrosNiveles.PuntajeTotal) as PuntajeTotal
-    from Players
-    inner join Sessions on Players.IDPlayer = Sessions.IDPlayer
-    inner join RegistrosNiveles on Sessions.IDSession = RegistrosNiveles.IDSession
-    group by Players.IDPlayer, Players.Nombre;
-END //
-
-DELIMITER ;
+insert into ConfigOleadas (TasaSpawn, CantidadDeAliens, Oleada, MultiplicadorDificultad) values
+(1.00, 54, 1, 1.00),
+(1.00, 54, 2, 1.00),
+(1.00, 54, 3, 1.00);
