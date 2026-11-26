@@ -5,8 +5,7 @@ namespace Project2
 {
     public class Ranking
     {
-        private List<DatosRanking> jugadores =
-            new List<DatosRanking>();
+        private List<DatosRanking> jugadores = new List<DatosRanking>();
 
         public int Cantidad
         {

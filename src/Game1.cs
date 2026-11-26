@@ -50,7 +50,7 @@ namespace Project2
         private List<Disparo> disparosAliens = new List<Disparo>();
 
         private float tiempoDisparoAlien = 0f;
-        private float intervaloDisparoAlien = 0.8f;
+        private float intervaloDisparoAlien = 0.4f;
         private int indiceAlienDisparador = 0;
         private KeyboardState teclaActual;
         private KeyboardState teclaAnterior;
@@ -75,30 +75,30 @@ namespace Project2
         }
 
         protected override void LoadContent()
-{
-    _spriteBatch = new SpriteBatch(GraphicsDevice);
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-    posicion = new Vector2(500, 950);
+            posicion = new Vector2(500, 950);
 
-    alien1 = Content.Load<Texture2D>("alien1");
-    alien2 = Content.Load<Texture2D>("alien2");
-    alien3 = Content.Load<Texture2D>("alien3");
+            alien1 = Content.Load<Texture2D>("alien1");
+            alien2 = Content.Load<Texture2D>("alien2");
+            alien3 = Content.Load<Texture2D>("alien3");
 
-    // Cargar los tipos de aliens desde MySQL
-    tiposAliens = BaseDatos.CargarTiposAliens();
+            // Cargar los tipos de aliens desde MySQL
+            tiposAliens = BaseDatos.CargarTiposAliens();
 
-    fuente = Content.Load<SpriteFont>("Arial");
+            fuente = Content.Load<SpriteFont>("Arial");
 
-    pixel = new Texture2D(GraphicsDevice, 1, 1);
-    pixel.SetData(new[] { Color.White });
+            pixel = new Texture2D(GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.White });
 
-    // Crear aliens y obstaculos
-    ReiniciarAliens();
-    ReiniciarObstaculos();
+            // Crear aliens y obstaculos
+            ReiniciarAliens();
+            ReiniciarObstaculos();
 
-    // Crear el menu
-    menu = new Menu(Window, fuente, pixel);
-}
+            // Crear el menu
+            menu = new Menu(Window, Content, fuente, pixel);
+        }
         protected override void Update(GameTime gameTime)
         {
             teclaActual = Keyboard.GetState();
@@ -119,27 +119,25 @@ namespace Project2
             }
             else
             {
-                if (teclaActual.IsKeyDown(Keys.Escape) &&
-                    teclaAnterior.IsKeyUp(Keys.Escape))
+                if (teclaActual.IsKeyDown(Keys.Escape) && teclaAnterior.IsKeyUp(Keys.Escape))
                 {
                     Exit();
                 }
 
                 if (!gameOver)
-        {
-            ActualizarPartida(gameTime);
-        }
-        else
-{
-    if (teclaActual.IsKeyDown(Keys.Enter) &&
-        teclaAnterior.IsKeyUp(Keys.Enter))
-    {
-        partidaIniciada = false;
-        gameOver = false;
+                {
+                ActualizarPartida(gameTime);
+                }
+                else
+                {
+                    if (teclaActual.IsKeyDown(Keys.Enter) && teclaAnterior.IsKeyUp(Keys.Enter))
+                    {
+                        partidaIniciada = false;
+                        gameOver = false;
 
-        menu.VolverAlMenu();
-    }
-}
+                        menu.VolverAlMenu();
+                    }
+                }       
             }
 
             teclaAnterior = teclaActual;

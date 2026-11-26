@@ -1,5 +1,5 @@
-
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -14,13 +14,47 @@ namespace Project2
             Nombre,
             Naves
         }
+
+        private const int MAX_NOMBRE = 20;
+
+        private static readonly Color TextoOscuro = new Color(25, 55, 100);
+        private static readonly Color TextoSuave = new Color(120, 130, 145);
+
+        private EstadoMenu estadoActual = EstadoMenu.Nombre;
+
         private Ranking ranking = new Ranking();
         private string mensajeRanking = "";
-        private EstadoMenu estadoActual = EstadoMenu.Nombre;
 
         private GameWindow ventana;
         private SpriteFont fuente;
         private Texture2D pixel;
+        // imaganes para el menu de naves(titulom tarjetas azul y verde, botonjugar, LAS NAVES para las tarjetas)
+        private ContentManager content;
+        private Texture2D texNave1; 
+        private Texture2D texNave2;
+        private Texture2D texNave3;
+        private Texture2D texTitulo;
+        private Texture2D texBotonJugar;
+        private Texture2D texTarjetaAzul;
+        private Texture2D texTarjetaVerde;
+        private Rectangle rectTitulo = new Rectangle(297, 130, 429, 67);
+        // Imagenes del menu (Content: logo, panel_nombre, boton_continuar, panel_ranking)
+        private Texture2D texLogo;
+        private Texture2D texPanelNombre;
+        private Texture2D texBoton;
+        private Texture2D texPanelRanking;
+
+        // Posiciones en pantalla (ventana de 1024x1024)
+        private Rectangle pantalla = new Rectangle(0, 0, 1024, 1024);
+        private Rectangle rectLogo = new Rectangle(60, 190, 500, 270);
+        private Rectangle rectPanelNombre = new Rectangle(60, 480, 500, 166);
+        private Rectangle botonContinuar = new Rectangle(130, 670, 360, 90);
+        private Rectangle rectRanking = new Rectangle(590, 250, 400, 501);
+        private Rectangle botonJugar = new Rectangle(392, 800, 240, 81);
+
+        // Se calculan en el constructor segun el tamano de cada imagen
+        private Rectangle campoNombre;
+        private float escalaRanking;
 
         private string nombreJugador = "";
         private int idJugador;
@@ -36,12 +70,6 @@ namespace Project2
 
         private MouseState mouseActual;
         private MouseState mouseAnterior;
-
-        private Rectangle botonContinuar =
-        new Rectangle(160, 600, 300, 65);
-
-        private Rectangle botonJugar =
-            new Rectangle(362, 800, 300, 65);
 
         public bool InicioSolicitado { get; private set; }
         public bool SolicitaSalir { get; private set; }
@@ -60,110 +88,63 @@ namespace Project2
         {
             get { return nombreJugador; }
         }
-
-        public Menu(GameWindow ventana, SpriteFont fuente, Texture2D pixel)
+        private float YTarjeta(Rectangle tarjeta, float fraccion, float escala)
         {
+            return tarjeta.Y + tarjeta.Height * fraccion - fuente.LineSpacing * escala / 2f;
+        }
+        private Texture2D ObtenerSpriteNave(int indice)
+        {
+            if (indice == 0)
+                return texNave1;
+
+            if (indice == 1)
+                return texNave2;
+
+            return texNave3;
+        }
+        public Menu(GameWindow ventana, ContentManager content, SpriteFont fuente, Texture2D pixel)
+        {
+            this.content = content; 
             this.ventana = ventana;
             this.fuente = fuente;
             this.pixel = pixel;
 
+            texLogo = content.Load<Texture2D>("logo");
+            texPanelNombre = content.Load<Texture2D>("panel_nombre");
+            texBoton = content.Load<Texture2D>("boton_continuar");
+            texPanelRanking = content.Load<Texture2D>("panel_ranking");
+
+            texTitulo = content.Load<Texture2D>("titulo_elegir_nave");
+            texBotonJugar = content.Load<Texture2D>("boton_jugar");
+            texTarjetaAzul = content.Load<Texture2D>("tarjeta_azul");
+            texTarjetaVerde = content.Load<Texture2D>("tarjeta_verde");
+
+
+            // Caja de escritura dentro de panel_nombre.png
+            // (medida sobre la imagen original: x 60, y 107, 665 x 90)
+            float e = rectPanelNombre.Width / (float)texPanelNombre.Width;
+            campoNombre = new Rectangle(rectPanelNombre.X + (int)(60 * e), rectPanelNombre.Y + (int)(107 * e), (int)(665 * e), (int)(90 * e)
+            );
+
+            escalaRanking = rectRanking.Width / (float)texPanelRanking.Width;
+
             ventana.TextInput += EscribirNombre;
 
             CargarRanking();
-
         }
+
+        // ---------------- LOGICA ----------------
+
         private void CargarRanking()
         {
             try
             {
                 ranking.Cargar();
                 mensajeRanking = "";
-        }
+            }
             catch (Exception)
             {
                 mensajeRanking = "No se pudo cargar el ranking.";
-            }
-        }       
-
-        private void DibujarRanking(SpriteBatch spriteBatch)
-        {
-            Rectangle panel = new Rectangle(570, 330, 390, 490);
-
-            spriteBatch.Draw(pixel, panel, new Color(20, 35, 60));
-
-            DibujarTextoTarjeta(
-            spriteBatch,
-            "TOP 10 JUGADORES",
-            panel,
-            345,
-            Color.Cyan,
-            1f
-        );
-
-            if (mensajeRanking != "")
-            {
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    mensajeRanking,
-                    panel,
-                    410,
-                    Color.OrangeRed,
-                    0.7f
-                );
-
-                return;
-            }
-
-            if (ranking.Cantidad == 0)
-            {
-                DibujarTextoTarjeta(
-                 spriteBatch,
-                 "Todavia no hay resultados.",
-                    panel,
-                    420,
-                    Color.LightGray,
-                    0.7f
-                );
-
-                return;
-            }
-
-            for (int i = 0; i < ranking.Cantidad && i < 10; i++)
-            {
-                DatosRanking jugador = ranking.Obtener(i);
-
-                int y = 400 + i * 38;
-
-                string texto =
-            (       i + 1) + ". " + jugador.Nombre;
-
-                spriteBatch.DrawString(
-                    fuente,
-                    texto,
-                    new Vector2(panel.X + 20, y),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    0.7f,
-                    SpriteEffects.None,
-                    0f
-                );
-
-                string puntos = jugador.PuntajeAcumulado.ToString();
-
-                Vector2 medida = fuente.MeasureString(puntos) * 0.7f;
-
-                spriteBatch.DrawString(
-                    fuente,
-                    puntos,
-                    new Vector2(panel.Right - medida.X - 20, y),
-                 Color.Yellow,
-                    0f,
-                    Vector2.Zero,
-                    0.7f,
-                    SpriteEffects.None,
-                    0f
-             );
             }
         }
 
@@ -172,7 +153,7 @@ namespace Project2
             if (estadoActual != EstadoMenu.Nombre)
                 return;
 
-            if (!char.IsControl(e.Character) && nombreJugador.Length < 50)
+            if (!char.IsControl(e.Character) && nombreJugador.Length < MAX_NOMBRE)
             {
                 nombreJugador += e.Character;
             }
@@ -183,11 +164,7 @@ namespace Project2
             teclaActual = Keyboard.GetState();
             mouseActual = Mouse.GetState();
 
-            bool escapePresionado =
-                teclaActual.IsKeyDown(Keys.Escape) &&
-                teclaAnterior.IsKeyUp(Keys.Escape);
-
-            if (escapePresionado)
+            if (Presionada(Keys.Escape))
             {
                 if (estadoActual == EstadoMenu.Naves)
                 {
@@ -201,40 +178,32 @@ namespace Project2
             }
 
             if (estadoActual == EstadoMenu.Nombre)
-            {
                 ActualizarMenuNombre();
-            }
-            else if (estadoActual == EstadoMenu.Naves)
-            {
+            else
                 ActualizarMenuNaves();
-            }
 
             teclaAnterior = teclaActual;
             mouseAnterior = mouseActual;
         }
 
+        private bool Presionada(Keys tecla)
+        {
+            return teclaActual.IsKeyDown(tecla) && teclaAnterior.IsKeyUp(tecla);
+        }
+
+        private bool ClicEn(Rectangle area)
+        {
+            return mouseActual.LeftButton == ButtonState.Pressed && mouseAnterior.LeftButton == ButtonState.Released && area.Contains(mouseActual.Position);
+        }
+
         private void ActualizarMenuNombre()
         {
-            bool enterPresionado =
-                teclaActual.IsKeyDown(Keys.Enter) &&
-                teclaAnterior.IsKeyUp(Keys.Enter);
-
-            bool borrarPresionado =
-                teclaActual.IsKeyDown(Keys.Back) &&
-                teclaAnterior.IsKeyUp(Keys.Back);
-
-            bool click =
-                mouseActual.LeftButton == ButtonState.Pressed &&
-                mouseAnterior.LeftButton == ButtonState.Released;
-
-            if (borrarPresionado && nombreJugador.Length > 0)
+            if (Presionada(Keys.Back) && nombreJugador.Length > 0)
             {
-                nombreJugador =
-                    nombreJugador.Substring(0, nombreJugador.Length - 1);
+                nombreJugador = nombreJugador.Substring(0, nombreJugador.Length - 1);
             }
 
-            if (enterPresionado ||
-                (click && botonContinuar.Contains(mouseActual.Position)))
+            if (Presionada(Keys.Enter) || ClicEn(botonContinuar))
             {
                 BuscarJugador();
             }
@@ -256,13 +225,9 @@ namespace Project2
                 idJugador = BaseDatos.ObtenerOCrearJugador(nombreJugador);
 
                 naves = BaseDatos.CargarNaves();
-
-                if (naves.Count == 0)
-                {
-                    mensajeMenu = "No hay naves en la base de datos.";
-                    errorMenu = true;
-                    return;
-                }
+                texNave1 = content.Load<Texture2D>(naves[0].Nombre);
+                texNave2 = content.Load<Texture2D>(naves[1].Nombre);
+                texNave3 = content.Load<Texture2D>(naves[2].Nombre);
 
                 naveSeleccionada = 0;
                 estadoActual = EstadoMenu.Naves;
@@ -279,23 +244,7 @@ namespace Project2
 
         private void ActualizarMenuNaves()
         {
-            bool izquierda =
-                teclaActual.IsKeyDown(Keys.Left) &&
-                teclaAnterior.IsKeyUp(Keys.Left);
-
-            bool derecha =
-                teclaActual.IsKeyDown(Keys.Right) &&
-                teclaAnterior.IsKeyUp(Keys.Right);
-
-            bool enterPresionado =
-                teclaActual.IsKeyDown(Keys.Enter) &&
-                teclaAnterior.IsKeyUp(Keys.Enter);
-
-            bool click =
-                mouseActual.LeftButton == ButtonState.Pressed &&
-                mouseAnterior.LeftButton == ButtonState.Released;
-
-            if (izquierda)
+            if (Presionada(Keys.Left))
             {
                 naveSeleccionada--;
 
@@ -303,7 +252,7 @@ namespace Project2
                     naveSeleccionada = naves.Count - 1;
             }
 
-            if (derecha)
+            if (Presionada(Keys.Right))
             {
                 naveSeleccionada++;
 
@@ -313,16 +262,13 @@ namespace Project2
 
             for (int i = 0; i < naves.Count; i++)
             {
-                Rectangle tarjeta = ObtenerTarjetaNave(i);
-
-                if (click && tarjeta.Contains(mouseActual.Position))
+                if (ClicEn(ObtenerTarjetaNave(i)))
                 {
                     naveSeleccionada = i;
                 }
             }
 
-            if (enterPresionado ||
-                (click && botonJugar.Contains(mouseActual.Position)))
+            if (Presionada(Keys.Enter) || ClicEn(botonJugar))
             {
                 ComenzarPartida();
             }
@@ -330,21 +276,13 @@ namespace Project2
 
         private Rectangle ObtenerTarjetaNave(int indice)
         {
-            int ancho = 220;
+            int ancho = 260;
             int espacio = 25;
 
-            int total =
-                naves.Count * ancho +
-                (naves.Count - 1) * espacio;
+            int total = naves.Count * ancho + (naves.Count - 1) * espacio;
+            int inicio = (pantalla.Width - total) / 2;
 
-            int inicio = (1024 - total) / 2;
-
-            return new Rectangle(
-                inicio + indice * (ancho + espacio),
-                350,
-                ancho,
-                350
-            );
+            return new Rectangle(inicio + indice * (ancho + espacio), 350, ancho, 340);
         }
 
         private void ComenzarPartida()
@@ -354,11 +292,9 @@ namespace Project2
 
             try
             {
-                DatosNave nave = naves[naveSeleccionada];
-
                 BaseDatos.GuardarNaveElegida(
                     idJugador,
-                    nave.IDNave
+                    naves[naveSeleccionada].IDNave
                 );
 
                 InicioSolicitado = true;
@@ -369,6 +305,7 @@ namespace Project2
                 errorMenu = true;
             }
         }
+
         public void VolverAlMenu()
         {
             InicioSolicitado = false;
@@ -378,285 +315,194 @@ namespace Project2
             CargarRanking();
         }
 
+        // ---------------- DIBUJO ----------------
+
         public void Dibujar(SpriteBatch spriteBatch)
         {
             if (estadoActual == EstadoMenu.Nombre)
-            {
                 DibujarMenuNombre(spriteBatch);
-            }
-            else if (estadoActual == EstadoMenu.Naves)
-            {
+            else
                 DibujarMenuNaves(spriteBatch);
-            }
         }
 
         private void DibujarMenuNombre(SpriteBatch spriteBatch)
         {
-            DibujarTextoTarjeta(
-            spriteBatch,
-            "ALIEN INVASION",
-            new Rectangle(60, 150, 500, 100),
-            180,
-            Color.Cyan,
-            2f
-        );
+            spriteBatch.Draw(texLogo, rectLogo, Color.White);
+            spriteBatch.Draw(texPanelNombre, rectPanelNombre, Color.White);
+            spriteBatch.Draw(texBoton, botonContinuar, Color.White);
 
-        DibujarTextoTarjeta(
-            spriteBatch,
-            "INGRESA TU NOMBRE",
-            new Rectangle(60, 300, 500, 60),
-            350,
-            Color.White,
-            1.2f
-        );
+            // Texto escrito (o sugerencia si todavia esta vacio)
+            bool vacio = nombreJugador.Length == 0;
+            string texto = vacio ? "Escribi tu nombre de usuario..." : nombreJugador;
 
-            Rectangle caja = new Rectangle(60, 430, 500, 65);
+            float y = campoNombre.Center.Y - fuente.LineSpacing / 2f;
 
-            spriteBatch.Draw(pixel, caja, Color.White);
+            DibujarTexto(spriteBatch, texto, new Vector2(campoNombre.X + 30, y + 55), vacio ? TextoSuave : TextoOscuro, 1f);
 
-            spriteBatch.Draw(
-                pixel,
-                new Rectangle(
-                    caja.X + 3,
-                    caja.Y + 3,
-                    caja.Width - 6,
-                    caja.Height - 6
-                ),
-                new Color(20, 35, 60)
-            );
-
-            string texto = nombreJugador;
-
-            if (texto.Length == 0)
-                texto = "Escribi tu nombre...";
-
-            spriteBatch.DrawString(
-                fuente,
-                texto,
-                new Vector2(85, 450),
-                nombreJugador.Length == 0 ? Color.Gray : Color.White
-            );
-
-            DibujarBoton(spriteBatch, botonContinuar, "CONTINUAR");
-            DibujarMensajeMenu(spriteBatch);
-
+            DibujarMensajeMenu(spriteBatch, rectPanelNombre, 630);
             DibujarRanking(spriteBatch);
+        }
+
+        private void DibujarRanking(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texPanelRanking, rectRanking, Color.White);
+
+            if (mensajeRanking != "")
+            {
+                DibujarTextoCentrado(spriteBatch, mensajeRanking, rectRanking, rectRanking.Y + 230, Color.DarkRed, 0.7f);
+                return;
+            }
+
+            if (ranking.Cantidad == 0)
+            {
+                DibujarTextoCentrado(spriteBatch, "Todavia no hay resultados.", rectRanking, rectRanking.Y + 220, TextoOscuro, 0.7f);
+                return;
+            }
+
+            float escala = 0.7f;
+
+            // Medidas tomadas sobre panel_ranking.png original (635 x 795):
+            // primera fila centrada en y=152, 68.5 px entre filas,
+            // pestana del numero en x=92, nombre desde x=135, puntaje hasta x=570
+            for (int i = 0; i < 9 && i<ranking.Cantidad; i++)
+            {
+                DatosRanking jugador = ranking.Obtener(i);
+
+                float centroY = rectRanking.Y + (152 + 68.5f * i) * escalaRanking;
+                float y = centroY - fuente.LineSpacing * escala / 2f;
+
+                // Numero de posicion, centrado en la pestana azul
+                string posicion = (i + 1).ToString();
+                float anchoPos = fuente.MeasureString(posicion).X * escala;
+                float xPestana = rectRanking.X + 92 * escalaRanking;
+
+                DibujarTexto(spriteBatch, posicion, new Vector2(xPestana - anchoPos / 2f, y), TextoOscuro, escala);
+
+                // Nombre
+                string nombre = jugador.Nombre;
+                if (nombre.Length > 20)
+                    nombre = nombre.Substring(0, 20);
+
+                DibujarTexto(spriteBatch, nombre,new Vector2(rectRanking.X + 135 * escalaRanking, y),TextoOscuro, escala);
+
+                // Puntaje alineado a la derecha
+                string puntos = jugador.PuntajeAcumulado.ToString();
+                float anchoPuntos = fuente.MeasureString(puntos).X * escala;
+                float xDerecha = rectRanking.X + 570 * escalaRanking;
+
+                DibujarTexto(spriteBatch, puntos, new Vector2(xDerecha - anchoPuntos, y), TextoOscuro, escala);
+            }
         }
 
         private void DibujarMenuNaves(SpriteBatch spriteBatch)
         {
-            DibujarTextoCentrado(
-                spriteBatch,
-                "ELEGIR NAVE",
-                150,
-                Color.Cyan,
-                1.8f
-            );
+            spriteBatch.Draw(texTitulo, rectTitulo, Color.White);
 
-            DibujarTextoCentrado(
-                spriteBatch,
-                "Jugador: " + nombreJugador,
-                250,
-                Color.White,
-                1f
-            );
+            DibujarTextoCentrado(spriteBatch, "Jugador: " + nombreJugador,
+                pantalla, 250, Color.White, 1f);
+
+            float escala = 0.7f;
+            float[] filasY = { 0.568f, 0.640f, 0.715f, 0.792f };
 
             for (int i = 0; i < naves.Count; i++)
             {
                 DatosNave nave = naves[i];
-
                 Rectangle tarjeta = ObtenerTarjetaNave(i);
+                bool elegida = i == naveSeleccionada;
 
-                Color fondo =
-                    i == naveSeleccionada
-                    ? new Color(35, 90, 115)
-                    : new Color(25, 40, 65);
+                spriteBatch.Draw(elegida ? texTarjetaVerde : texTarjetaAzul, tarjeta, Color.White);
 
-                spriteBatch.Draw(pixel, tarjeta, fondo);
+                // Nombre, en la etiqueta de arriba
+                DibujarTextoCentrado(spriteBatch, nave.Nombre, tarjeta,
+                YTarjeta(tarjeta, 0.077f, 0.8f), Color.White, 0.8f);
 
-                spriteBatch.Draw(
-                    pixel,
-                    new Rectangle(
-                        tarjeta.X,
-                        tarjeta.Y,
-                        tarjeta.Width,
-                        5
-                    ),
-                    i == naveSeleccionada ? Color.Cyan : Color.Gray
-                );
-
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    nave.Nombre,
-                    tarjeta,
-                    tarjeta.Y + 40,
-                    Color.White,
-                    1f
-                );
-
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    "Vida: " + nave.Vida,
-                    tarjeta,
-                    tarjeta.Y + 120,
-                    Color.LightGreen,
-                    0.8f
-                );
-
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    "Dano: " + nave.Dano,
-                    tarjeta,
-                    tarjeta.Y + 165,
-                    Color.Orange,
-                    0.8f
-                );
-
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    "Velocidad: " + nave.Velocidad,
-                    tarjeta,
-                    tarjeta.Y + 210,
-                    Color.LightBlue,
-                    0.8f
-                );
-
-                DibujarTextoTarjeta(
-                    spriteBatch,
-                    "Cadencia: " + nave.Cadencia,
-                    tarjeta,
-                    tarjeta.Y + 255,
-                    Color.White,
-                    0.8f
-                );
-
-                if (i == naveSeleccionada)
+                // Solo los valores: "Vida:", "Daño:", etc. ya vienen en la imagen
+                string[] valores =
                 {
-                    DibujarTextoTarjeta(
-                        spriteBatch,
-                        "SELECCIONADA",
-                        tarjeta,
-                        tarjeta.Y + 310,
-                        Color.Yellow,
-                        0.7f
-                    );
-                }
-                else
+                    nave.Vida.ToString(),
+                    nave.Dano.ToString(),
+                    nave.Velocidad.ToString(),
+                    nave.Cadencia.ToString()
+                };
+
+                for (int j = 0; j < valores.Length; j++)
                 {
-                    DibujarTextoTarjeta(
-                        spriteBatch,
-                        "CLIC PARA ELEGIR",
-                        tarjeta,
-                        tarjeta.Y + 310,
-                        Color.Gray,
-                        0.7f
-                    );
+                    float ancho = fuente.MeasureString(valores[j]).X * escala;
+                    float x = tarjeta.X + tarjeta.Width * 0.855f - ancho;
+
+                    if(elegida)
+                        DibujarTexto(spriteBatch, valores[j], new Vector2(x, YTarjeta(tarjeta, filasY[j], escala) -4), Color.White, escala);
+                    else
+                        DibujarTexto(spriteBatch, valores[j], new Vector2(x, YTarjeta(tarjeta, filasY[j], escala) +4), Color.White, escala);
                 }
+
+                DibujarSpriteEnMarco(spriteBatch, ObtenerSpriteNave(i), tarjeta);
+
+                // Etiqueta de abajo
+                DibujarTextoCentrado(spriteBatch,
+                elegida ? "SELECCIONADA" : "ELEGIR",
+                tarjeta, YTarjeta(tarjeta, 0.90f, 0.6f),
+                elegida ? Color.Yellow : Color.LightGray, 0.6f);
             }
 
-            DibujarBoton(spriteBatch, botonJugar, "JUGAR");
-            DibujarMensajeMenu(spriteBatch);
+            spriteBatch.Draw(texBotonJugar, botonJugar, Color.White);
 
-            DibujarTextoCentrado(
-                spriteBatch,
-                "Usa las flechas para cambiar de nave",
-                750,
-                Color.LightGray,
-                0.7f
-            );
+        }
+        private void DibujarSpriteEnMarco(SpriteBatch spriteBatch, Texture2D sprite, Rectangle tarjeta)
+        {
+            Rectangle marco = new Rectangle(tarjeta.X + (int)(tarjeta.Width * 0.10f),tarjeta.Y + (int)(tarjeta.Height * 0.17f),(int)(tarjeta.Width * 0.79f),(int)(tarjeta.Height * 0.33f));
+
+            int margen = 10;
+
+            float escala = Math.Min(
+                (marco.Width - margen * 2) / (float)sprite.Width,
+                (marco.Height - margen * 2) / (float)sprite.Height);
+
+            int ancho = (int)(sprite.Width * escala);
+            int alto = (int)(sprite.Height * escala);
+
+            Rectangle destino = new Rectangle(
+                marco.Center.X - ancho / 2,
+                marco.Center.Y - alto / 2,
+                ancho,
+                alto);
+
+            spriteBatch.Draw(sprite, destino, Color.White);
         }
 
-        private void DibujarBoton(
-            SpriteBatch spriteBatch,
-            Rectangle area,
-            string texto)
+        private void DibujarBoton(SpriteBatch spriteBatch, Rectangle area, string texto)
         {
-            spriteBatch.Draw(
-                pixel,
-                area,
-                new Color(0, 130, 160)
-            );
+            spriteBatch.Draw(pixel, area, new Color(0, 130, 160));
 
-            Vector2 medida = fuente.MeasureString(texto);
-
-            Vector2 posicionTexto = new Vector2(
-                area.X + (area.Width - medida.X) / 2,
-                area.Y + (area.Height - medida.Y) / 2
-            );
-
-            spriteBatch.DrawString(
-                fuente,
-                texto,
-                posicionTexto,
-                Color.White
-            );
+            DibujarTextoCentrado(spriteBatch, texto, area,
+                area.Y + (area.Height - fuente.LineSpacing) / 2, Color.White, 1f);
         }
 
-        private void DibujarMensajeMenu(SpriteBatch spriteBatch)
+        private void DibujarMensajeMenu(SpriteBatch spriteBatch, Rectangle area, int y)
         {
-            Color color =
-                errorMenu ? Color.OrangeRed : Color.LightGreen;
+            Color color = errorMenu ? Color.OrangeRed : Color.LightGreen;
 
-            DibujarTextoTarjeta(
-                spriteBatch,
-                mensajeMenu,
-                new Rectangle(60, 680, 500, 40),
-                680,
-                color,
-                0.7f
-            );
+            DibujarTextoCentrado(spriteBatch, mensajeMenu, area, y, color, 0.7f);
         }
 
-        private void DibujarTextoCentrado(
-            SpriteBatch spriteBatch,
-            string texto,
-            float y,
-            Color color,
-            float escala)
+        // ---------------- AYUDAS DE TEXTO ----------------
+
+        private void DibujarTexto(SpriteBatch spriteBatch, string texto,
+                                  Vector2 posicion, Color color, float escala)
         {
-            Vector2 medida = fuente.MeasureString(texto) * escala;
-
-            Vector2 posicionTexto = new Vector2(
-                (1024 - medida.X) / 2,
-                y
-            );
-
-            spriteBatch.DrawString(
-                fuente,
-                texto,
-                posicionTexto,
-                color,
-                0f,
-                Vector2.Zero,
-                escala,
-                SpriteEffects.None,
-                0f
-            );
+            spriteBatch.DrawString(fuente, texto, posicion, color,
+                0f, Vector2.Zero, escala, SpriteEffects.None, 0f);
         }
 
-        private void DibujarTextoTarjeta(
-            SpriteBatch spriteBatch,
-            string texto,
-            Rectangle tarjeta,
-            int y,
-            Color color,
-            float escala)
+        // Centra el texto horizontalmente dentro de "area"
+        private void DibujarTextoCentrado(SpriteBatch spriteBatch, string texto,
+                                          Rectangle area, float y,
+                                          Color color, float escala)
         {
-            Vector2 medida = fuente.MeasureString(texto) * escala;
+            float ancho = fuente.MeasureString(texto).X * escala;
+            float x = area.X + (area.Width - ancho) / 2f;
 
-            float x = tarjeta.X + (tarjeta.Width - medida.X) / 2;
-
-            spriteBatch.DrawString(
-                fuente,
-                texto,
-                new Vector2(x, y),
-                color,
-                0f,
-                Vector2.Zero,
-                escala,
-                SpriteEffects.None,
-                0f
-            );
+            DibujarTexto(spriteBatch, texto, new Vector2(x, y), color, escala);
         }
     }
 }
