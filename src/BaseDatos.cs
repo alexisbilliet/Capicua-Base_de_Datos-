@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using MySqlConnector;
@@ -15,6 +14,7 @@ namespace Project2
         public decimal Cadencia;
         public decimal Costo;
     }
+
     public class DatosAlien
     {
         public int IDAlienType;
@@ -22,12 +22,23 @@ namespace Project2
         public int Vida;
         public int Puntos;
     }
+
     public class DatosRanking
     {
         public int IDPlayer;
         public string Nombre;
         public int PuntajeAcumulado;
-    }   
+    }
+
+    public class DatosNivel
+    {
+        public int IDNivel;
+        public float MultiDano;
+        public float MultiVel;
+        public float MultiVida;
+        public int PuntosNecesarios;
+    }
+
     public static class BaseDatos
     {
         private static string conexion =
@@ -103,6 +114,40 @@ namespace Project2
 
             return naves;
         }
+
+        public static List<DatosNivel> CargarNiveles()
+        {
+            List<DatosNivel> niveles = new List<DatosNivel>();
+
+            using (MySqlConnection cn = new MySqlConnection(conexion))
+            {
+                cn.Open();
+
+                string consulta =
+                    "select IDNivel, MultiDano, MultiVel, Multivida as MultiVida, PuntosNecesarios " +
+                    "from Niveles order by IDNivel";
+
+                using (MySqlCommand cmd = new MySqlCommand(consulta, cn))
+                using (MySqlDataReader lector = cmd.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        DatosNivel nivel = new DatosNivel();
+
+                        nivel.IDNivel = lector.GetInt32("IDNivel");
+                        nivel.MultiDano = (float)lector.GetDecimal("MultiDano");
+                        nivel.MultiVel = (float)lector.GetDecimal("MultiVel");
+                        nivel.MultiVida = (float)lector.GetDecimal("MultiVida");
+                        nivel.PuntosNecesarios = lector.GetInt32("PuntosNecesarios");
+
+                        niveles.Add(nivel);
+                    }
+                }
+            }
+
+            return niveles;
+        }
+
         public static int CrearSession(int idJugador)
         {
             using (MySqlConnection conexionBD = new MySqlConnection(conexion))
@@ -110,7 +155,7 @@ namespace Project2
                 conexionBD.Open();
 
                 string consulta = "insert into Sessions (FechaInicio, IDPlayer) " +
-                                 "values (@fecha, @idJugador)";
+                                  "values (@fecha, @idJugador)";
 
                 using (MySqlCommand comando = new MySqlCommand(consulta, conexionBD))
                 {
@@ -122,13 +167,10 @@ namespace Project2
                     return Convert.ToInt32(comando.LastInsertedId);
                 }
             }
-        }       
-        public static void GuardarResultado(
-            int idSession,
-            int puntaje,
-            int enemigosEliminados,
-            TimeSpan tiempo,
-            string estado)
+        }
+
+        // Cierra la sesion: fecha de fin y estado final (Victoria / Derrota)
+        public static void FinalizarSession(int idSession, string estado)
         {
             using (MySqlConnection conexionBD = new MySqlConnection(conexion))
             {
@@ -140,28 +182,44 @@ namespace Project2
 
                 using (MySqlCommand comando = new MySqlCommand(consulta, conexionBD))
                 {
-                   comando.Parameters.AddWithValue("@fecha", DateTime.Now);
+                    comando.Parameters.AddWithValue("@fecha", DateTime.Now);
                     comando.Parameters.AddWithValue("@estado", estado);
-                    comando.Parameters.AddWithValue("@idSession", idSession);
-
-                    comando.ExecuteNonQuery();
-                }
-
-                string consultaRegistro = "insert into RegistrosNiveles " +
-                    "(TiempoInvertido, EnemigosEliminados, PuntajeTotal, IDSession, IDNivel) " +
-                    "values (@tiempo, @enemigos, @puntaje, @idSession, 1)";
-
-                using (MySqlCommand comando = new MySqlCommand(consultaRegistro, conexionBD))
-                {
-                    comando.Parameters.AddWithValue("@tiempo", tiempo);
-                    comando.Parameters.AddWithValue("@enemigos", enemigosEliminados);
-                    comando.Parameters.AddWithValue("@puntaje", puntaje);
                     comando.Parameters.AddWithValue("@idSession", idSession);
 
                     comando.ExecuteNonQuery();
                 }
             }
         }
+
+        // Guarda una fila en RegistrosNiveles por cada nivel jugado
+        public static void GuardarRegistroNivel(
+            int idSession,
+            int idNivel,
+            int puntaje,
+            int enemigosEliminados,
+            TimeSpan tiempo)
+        {
+            using (MySqlConnection conexionBD = new MySqlConnection(conexion))
+            {
+                conexionBD.Open();
+
+                string consulta = "insert into RegistrosNiveles " +
+                    "(TiempoInvertido, EnemigosEliminados, PuntajeTotal, IDSession, IDNivel) " +
+                    "values (@tiempo, @enemigos, @puntaje, @idSession, @idNivel)";
+
+                using (MySqlCommand comando = new MySqlCommand(consulta, conexionBD))
+                {
+                    comando.Parameters.AddWithValue("@tiempo", tiempo);
+                    comando.Parameters.AddWithValue("@enemigos", enemigosEliminados);
+                    comando.Parameters.AddWithValue("@puntaje", puntaje);
+                    comando.Parameters.AddWithValue("@idSession", idSession);
+                    comando.Parameters.AddWithValue("@idNivel", idNivel);
+
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static void GuardarNaveElegida(int idJugador, int idNave)
         {
             using (MySqlConnection cn = new MySqlConnection(conexion))
@@ -198,74 +256,72 @@ namespace Project2
             }
         }
 
-    public static List<DatosAlien> CargarTiposAliens()
-    {
-        List<DatosAlien> aliens = new List<DatosAlien>();
-
-        using (MySqlConnection cn = new MySqlConnection(conexion))
+        public static List<DatosAlien> CargarTiposAliens()
         {
-            cn.Open();
+            List<DatosAlien> aliens = new List<DatosAlien>();
 
-            string consulta =
-                "select IDAlienType, Nombre, Vida, PuntosOtorgados " +
-                "from AliensTypes order by IDAlienType";
-
-            using (MySqlCommand cmd = new MySqlCommand(consulta, cn))
-            using (MySqlDataReader lector = cmd.ExecuteReader())
+            using (MySqlConnection cn = new MySqlConnection(conexion))
             {
-                while (lector.Read())
+                cn.Open();
+
+                string consulta =
+                    "select IDAlienType, Nombre, Vida, PuntosOtorgados " +
+                    "from AliensTypes order by IDAlienType";
+
+                using (MySqlCommand cmd = new MySqlCommand(consulta, cn))
+                using (MySqlDataReader lector = cmd.ExecuteReader())
                 {
-                    DatosAlien alien = new DatosAlien();
+                    while (lector.Read())
+                    {
+                        DatosAlien alien = new DatosAlien();
 
-                    alien.IDAlienType = lector.GetInt32("IDAlienType");
-                    alien.Nombre = lector.GetString("Nombre");
-                    alien.Vida = lector.GetInt32("Vida");
-                    alien.Puntos = lector.GetInt32("PuntosOtorgados");
+                        alien.IDAlienType = lector.GetInt32("IDAlienType");
+                        alien.Nombre = lector.GetString("Nombre");
+                        alien.Vida = lector.GetInt32("Vida");
+                        alien.Puntos = lector.GetInt32("PuntosOtorgados");
 
-                    aliens.Add(alien);
+                        aliens.Add(alien);
+                    }
                 }
             }
-        }
 
-        return aliens;
+            return aliens;
         }
 
         public static List<DatosRanking> CargarRanking()
-    {
-        List<DatosRanking> jugadores = new List<DatosRanking>();
-
-        using (MySqlConnection cn = new MySqlConnection(conexion))
         {
-            cn.Open();
+            List<DatosRanking> jugadores = new List<DatosRanking>();
 
-            string consulta =
-                "select p.IDPlayer, p.Nombre, " +
-                "sum(r.PuntajeTotal) as PuntajeAcumulado " +
-                "from Players p " +
-                "inner join Sessions s on p.IDPlayer = s.IDPlayer " +
-                "inner join RegistrosNiveles r on s.IDSession = r.IDSession " +
-                "group by p.IDPlayer, p.Nombre";
-
-            using (MySqlCommand cmd = new MySqlCommand(consulta, cn))
-             using (MySqlDataReader lector = cmd.ExecuteReader())
+            using (MySqlConnection cn = new MySqlConnection(conexion))
             {
-                while (lector.Read())
+                cn.Open();
+
+                string consulta =
+                    "select p.IDPlayer, p.Nombre, " +
+                    "sum(r.PuntajeTotal) as PuntajeAcumulado " +
+                    "from Players p " +
+                    "inner join Sessions s on p.IDPlayer = s.IDPlayer " +
+                    "inner join RegistrosNiveles r on s.IDSession = r.IDSession " +
+                    "group by p.IDPlayer, p.Nombre";
+
+                using (MySqlCommand cmd = new MySqlCommand(consulta, cn))
+                using (MySqlDataReader lector = cmd.ExecuteReader())
                 {
-                    DatosRanking jugador = new DatosRanking();
+                    while (lector.Read())
+                    {
+                        DatosRanking jugador = new DatosRanking();
 
-                    jugador.IDPlayer = lector.GetInt32("IDPlayer");
-                    jugador.Nombre = lector.GetString("Nombre");
-                    jugador.PuntajeAcumulado =
-                    lector.GetInt32("PuntajeAcumulado");
+                        jugador.IDPlayer = lector.GetInt32("IDPlayer");
+                        jugador.Nombre = lector.GetString("Nombre");
+                        jugador.PuntajeAcumulado =
+                            lector.GetInt32("PuntajeAcumulado");
 
-                jugadores.Add(jugador);
+                        jugadores.Add(jugador);
+                    }
                 }
             }
+
+            return jugadores;
         }
-
-        return jugadores;
-    }
-
-
     }
 }

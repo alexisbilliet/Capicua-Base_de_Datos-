@@ -433,7 +433,7 @@ namespace Project2
                     if(elegida)
                         DibujarTexto(spriteBatch, valores[j], new Vector2(x, YTarjeta(tarjeta, filasY[j], escala) -4), Color.White, escala);
                     else
-                        DibujarTexto(spriteBatch, valores[j], new Vector2(x, YTarjeta(tarjeta, filasY[j], escala) +4), Color.White, escala);
+                        DibujarTexto(spriteBatch, valores[j], new Vector2(x, YTarjeta(tarjeta, filasY[j], escala) +2), Color.White, escala);
                 }
 
                 DibujarSpriteEnMarco(spriteBatch, ObtenerSpriteNave(i), tarjeta);

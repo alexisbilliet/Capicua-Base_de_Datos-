@@ -15,19 +15,10 @@ namespace Project2
         public int IDAlienType;
         public string Nombre;
 
-        public AlienEnemigo(
-            Vector2 posicionInicial,
-            int ancho,
-            int alto,
-            DatosAlien datos)
+        public AlienEnemigo(Vector2 posicionInicial, int ancho, int alto, DatosAlien datos)
         {
             Posicion = posicionInicial;
-            Hitbox = new Rectangle(
-                (int)posicionInicial.X,
-                (int)posicionInicial.Y,
-                ancho,
-                alto
-            );
+            Hitbox = new Rectangle((int)posicionInicial.X, (int)posicionInicial.Y, ancho, alto);
 
             Activo = true;
 
