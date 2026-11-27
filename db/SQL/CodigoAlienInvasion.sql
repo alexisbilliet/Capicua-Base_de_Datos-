@@ -168,15 +168,15 @@ create table AliensOleadas (
 
 insert into Niveles (Nivel, MultiDano, MultiVel, Multivida, PuntosNecesarios) values
 (1, 1.00, 1.00, 1.00, 0),
-(2, 1.15, 1.10, 1.25, 500),
-(3, 1.30, 1.20, 1.50, 1200),
-(4, 1.45, 1.30, 1.75, 2200),
-(5, 1.60, 1.40, 2.00, 3500),
-(6, 1.75, 1.50, 2.25, 5000),
-(7, 1.90, 1.60, 2.50, 7000),
-(8, 2.05, 1.70, 2.75, 9500),
-(9, 2.20, 1.80, 3.00, 12500),
-(10, 2.35, 1.90, 3.25, 16000);
+(2, 1.15, 1.10, 1.25, 100),
+(3, 1.30, 1.20, 1.50, 200),
+(4, 1.45, 1.30, 1.75, 400),
+(5, 1.60, 1.40, 2.00, 600),
+(6, 1.75, 1.50, 2.25, 800),
+(7, 1.90, 1.60, 2.50, 1000),
+(8, 2.05, 1.70, 2.75, 1300),
+(9, 2.20, 1.80, 3.00, 1500),
+(10, 2.35, 1.90, 3.25, 1700);
 
 insert into TiposAcciones (Nombre, Descripcion) values
 ('Disparo', 'Disparo realizado por el jugador'),
@@ -200,14 +200,14 @@ insert into AliensFactions (Nombre, ResistenciaBase, SpriteBase, IDPatronMovimie
 ('Destructores', 2.00, 'alien.png', 3);
 
 insert into AliensTypes (Nombre, Vida, Velocidad, Dano, PuntosOtorgados, VelDisparos, IDAlienFaction) values
-('Alien 1', 10, 40, 10, 10, 4.00, 1),
-('Alien 2', 20, 55, 15, 20, 5.00, 2),
-('Alien 3', 30, 70, 25, 30, 6.00, 3);
+('Alien 1', 10, 40, 10, 20, 4.00, 1),
+('Alien 2', 20, 55, 15, 40, 5.00, 2),
+('Alien 3', 30, 70, 25, 80, 6.00, 3);
 
 insert into Naves (Nombre, Vida, Dano, Velocidad, Cadencia, Costo) values
-('Cazador', 3, 10, 250, 0.35, 0.00),
-('Fortaleza', 5, 7, 180, 0.50, 0.00),
-('Relampago', 2, 14, 350, 0.20, 0.00);
+('Cazador', 3, 10, 250, 0.60, 0.00),
+('Fortaleza', 5, 30, 180, 1.20, 0.00),
+('Relampago', 2, 5, 350, 0.30, 0.00);
 
 insert into PowerUps (Nombre, Descripcion, Duracion) values
 ('Disparo rapido', 'Aumenta temporalmente la cadencia de disparo', '00:00:10'),
