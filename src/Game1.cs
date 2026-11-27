@@ -99,17 +99,6 @@ namespace Project2
             tiposAliens = BaseDatos.CargarTiposAliens();
             niveles = BaseDatos.CargarNiveles();
 
-            // Si la tabla Niveles esta vacia, se usa un nivel base (IDNivel 1)
-            if (niveles.Count == 0)
-            {
-                DatosNivel nivelBase = new DatosNivel();
-                nivelBase.IDNivel = 1;
-                nivelBase.MultiDano = 1f;
-                nivelBase.MultiVel = 1f;
-                nivelBase.MultiVida = 1f;
-                nivelBase.PuntosNecesarios = 0;
-                niveles.Add(nivelBase);
-            }
 
             fuente = Content.Load<SpriteFont>("Arial");
 
