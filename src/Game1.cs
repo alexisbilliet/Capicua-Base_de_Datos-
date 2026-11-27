@@ -62,7 +62,7 @@ namespace Project2
         private Random azar = new Random();
 
         private float tiempoDisparoAlien = 0f;
-        private float intervaloDisparoAlien = 0.4f;
+        private float intervaloDisparoAlien = 0.01f;
         private KeyboardState teclaActual;
         private KeyboardState teclaAnterior;
 
@@ -251,9 +251,20 @@ namespace Project2
         private void DispararAlien()
         {
             int cantidad = listaAliens.Count;
+            int aliensvivos = 0;
+            foreach(AlienEnemigo al in listaAliens)
+            {
+                if (al.Activo)
+                    aliensvivos++;
+            }
 
             if (cantidad == 0)
                 return;
+            if (aliensvivos <= 4)
+                intervaloDisparoAlien = 1f;
+            else
+                intervaloDisparoAlien = 0.01f;
+
 
             // Contar las columnas que tienen un alien habilitado
             int total = 0;
@@ -675,6 +686,7 @@ namespace Project2
 
                     listaAliens.Add(new AlienEnemigo(posInicial, spriteElegido.Width, spriteElegido.Height, tipoElegido));
                 }
+
             }
         }
 
