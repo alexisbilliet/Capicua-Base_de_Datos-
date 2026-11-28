@@ -277,7 +277,7 @@ namespace Project2
                     aliensvivos++;
             }
 
-            if (aliensvivos <= 4)
+            if (aliensvivos <= 6)
                 intervaloDisparoAlien = 1f / multiCadenciaDificultad[dificultad];
             else
                 intervaloDisparoAlien = 0.2f / multiCadenciaDificultad[dificultad];
