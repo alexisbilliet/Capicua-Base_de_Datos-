@@ -62,7 +62,21 @@ namespace Project2
         private Random azar = new Random();
 
         private float tiempoDisparoAlien = 0f;
-        private float intervaloDisparoAlien = 0.01f;
+        private float intervaloDisparoAlien = 0.4f;
+        // Boss
+        private Texture2D spriteBoss;
+        private AlienEnemigo boss;
+        private int dificultad = 1;
+        private float[] multiVidaDificultad = { 1f, 1.5f, 2f };                       //  para cuando se cambia la dificultad
+        private float[] multiCadenciaDificultad = { 1f, 1.3f, 1.6f };
+        private bool bossAparecio = false;
+        private Vector2 bossVelocidad;
+        private float tiempoDisparoBoss = 0f;
+        private float intervaloDisparoBoss = 0.5f;      // segundos entre disparos del boss
+        private const int VELOCIDAD_DISPARO_LENTO = 4;
+        private const int VELOCIDAD_DISPARO_RAPIDO = 14;
+        private const int VIDA_BOSS = 300;              // se usan si no hay "Alien Boss" en AliensTypes
+        private const int PUNTOS_BOSS = 500;
         private KeyboardState teclaActual;
         private KeyboardState teclaAnterior;
 
@@ -94,6 +108,7 @@ namespace Project2
             alien1 = Content.Load<Texture2D>("alien1");
             alien2 = Content.Load<Texture2D>("alien2");
             alien3 = Content.Load<Texture2D>("alien3");
+            spriteBoss = Content.Load<Texture2D>("alienboss");
 
             // Cargar los tipos de aliens y los niveles desde MySQL
             tiposAliens = BaseDatos.CargarTiposAliens();
@@ -171,6 +186,7 @@ namespace Project2
             tiempoAvisoNivel = 0f;
 
             naveJugador = menu.NaveElegida;
+            dificultad = menu.Dificultad;
 
             spriteNave = Content.Load<Texture2D>(naveJugador.Nombre);
 
@@ -195,7 +211,8 @@ namespace Project2
             disparosAliens.Clear();
 
             tiempoDisparoAlien = 0f;
-
+            bossAparecio = false;
+            boss = default(AlienEnemigo);
             posicion = new Vector2(500, 950);
 
             ReiniciarAliens();
@@ -216,6 +233,8 @@ namespace Project2
 
             // La vida maxima nueva se suma a la vida actual (no cura de golpe)
             int nuevaVidaMaxima = Math.Max(1, (int)Math.Round(naveJugador.Vida * nivel.MultiVida));
+            nuevaVidaMaxima = Math.Min(nuevaVidaMaxima, 9);
+
             vidas += nuevaVidaMaxima - vidaMaxima;
             vidaMaxima = nuevaVidaMaxima;
         }
@@ -258,12 +277,10 @@ namespace Project2
                     aliensvivos++;
             }
 
-            if (cantidad == 0)
-                return;
             if (aliensvivos <= 4)
-                intervaloDisparoAlien = 1f;
+                intervaloDisparoAlien = 1f / multiCadenciaDificultad[dificultad];
             else
-                intervaloDisparoAlien = 0.01f;
+                intervaloDisparoAlien = 0.2f / multiCadenciaDificultad[dificultad];
 
 
             // Contar las columnas que tienen un alien habilitado
@@ -329,6 +346,93 @@ namespace Project2
                     contador++;
                 }
             }
+        }
+        private void IniciarBoss()
+        {
+            // Si existe una fila "Alien Boss" en AliensTypes, usa su vida y puntos
+            DatosAlien datos = tiposAliens.Find(a => a.Nombre == "Alien Boss");
+
+            if (datos == null)
+            {
+                datos = new DatosAlien();
+                datos.IDAlienType = 0;
+                datos.Nombre = "Alien Boss";
+                datos.Vida = VIDA_BOSS;
+                datos.Puntos = PUNTOS_BOSS;
+            }
+
+            Vector2 posInicial = new Vector2((GraphicsDevice.Viewport.Width - spriteBoss.Width) / 2f, 80);
+
+            boss = new AlienEnemigo(posInicial, spriteBoss.Width * 2, spriteBoss.Height * 2, datos);
+
+            boss.Vida = Math.Max(1, (int)Math.Round(boss.Vida * multiVidaDificultad[dificultad]));
+            boss.VidaMaxima = boss.Vida;
+
+            // Direccion horizontal inicial al azar
+            float vx = azar.Next(2) == 0 ? 250f : -250f;
+            bossVelocidad = new Vector2(vx, 180f);
+
+            tiempoDisparoBoss = 0f;
+            bossAparecio = true;
+        }
+
+        private void ActualizarBoss(float tiempo)
+        {
+            boss.Posicion += bossVelocidad * tiempo;
+
+            int anchoPantalla = GraphicsDevice.Viewport.Width;
+            int limiteInferior = obstaculos[0].Area.Y - 200; 
+
+            // Rebote en las paredes: se invierte la velocidad del eje que choco
+            if (boss.Posicion.X < 0)
+            {
+                boss.Posicion.X = 0;
+                bossVelocidad.X = -bossVelocidad.X;
+            }
+            else if (boss.Posicion.X + spriteBoss.Width * 2 > anchoPantalla)
+            {
+                boss.Posicion.X = anchoPantalla - spriteBoss.Width * 2;
+                bossVelocidad.X = -bossVelocidad.X;
+            }
+
+            if (boss.Posicion.Y < 0)
+            {
+                boss.Posicion.Y = 0;
+                bossVelocidad.Y = -bossVelocidad.Y;
+            }
+            else if (boss.Posicion.Y + spriteBoss.Height * 2 > limiteInferior)
+            {
+                boss.Posicion.Y = limiteInferior - spriteBoss.Height * 2;
+                bossVelocidad.Y = -bossVelocidad.Y;
+            }
+
+            // La hitbox acompana al sprite
+            boss.Hitbox.X = (int)boss.Posicion.X;
+            boss.Hitbox.Y = (int)boss.Posicion.Y;
+
+            tiempoDisparoBoss += tiempo;
+
+            if (tiempoDisparoBoss >= intervaloDisparoBoss / multiCadenciaDificultad[dificultad])
+            {
+                DispararBoss();
+                tiempoDisparoBoss = 0f;
+            }
+        }
+
+        private void DispararBoss()
+        {
+            int x = boss.Hitbox.X + (boss.Hitbox.Width / 2) - 3;
+            int y = boss.Hitbox.Bottom;
+
+            Disparo disparo = new Disparo(x, y);
+
+            // Cada disparo sale lento o rapido al azar
+            if (azar.Next(2) == 0)
+                disparo.Velocidad = VELOCIDAD_DISPARO_LENTO;
+            else
+                disparo.Velocidad = VELOCIDAD_DISPARO_RAPIDO;
+
+            disparosAliens.Add(disparo);
         }
 
         // ---------------- JUEGO ----------------
@@ -411,6 +515,29 @@ namespace Project2
                         break;
                     }
                 }
+            }
+            // Boss: colision con las balas del jugador y movimiento
+            if (bossAparecio && boss.Activo)
+            {
+                for (int i = 0; i < listaDisparos.Count; i++)
+                {
+                    if (boss.Activo && listaDisparos[i].Rectangulo.Intersects(boss.Hitbox))
+                    {
+                        bool eliminado = boss.RecibirDano(dano);
+
+                        if (eliminado)
+                        {
+                            puntaje += boss.Puntos;
+                            enemigosEliminados++;
+                        }
+
+                        listaDisparos.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                if (boss.Activo)
+                    ActualizarBoss(tiempo);
             }
 
             // Subida de nivel: se alcanza el puntaje necesario del nivel siguiente
@@ -513,8 +640,14 @@ namespace Project2
                 }
             }
 
-            // Victoria: no quedan aliens
-            if (aliensVivos == 0)
+            // Cuando no quedan aliens, aparece el boss
+            if (aliensVivos == 0 && !bossAparecio)
+            {
+                IniciarBoss();
+            }
+
+            // Victoria: el boss fue derrotado
+            if (bossAparecio && !boss.Activo)
             {
                 if (!resultadoGuardado)
                 {
@@ -578,6 +711,17 @@ namespace Project2
 
                     _spriteBatch.Draw(sprite, al.Posicion, Color.White);
                 }
+            }
+            // Boss y su barra de vida
+            if (bossAparecio && boss.Activo)
+            {
+                _spriteBatch.Draw(spriteBoss, boss.Hitbox, Color.White);
+
+                Rectangle fondoBarra = new Rectangle(312, 10, 400, 16);
+                int anchoVida = (int)(fondoBarra.Width * (float)boss.Vida / boss.VidaMaxima);
+
+                _spriteBatch.Draw(pixel, fondoBarra, Color.DarkRed);
+                _spriteBatch.Draw(pixel, new Rectangle(fondoBarra.X, fondoBarra.Y, anchoVida, fondoBarra.Height), Color.LimeGreen);
             }
 
             foreach (Disparo disparo in listaDisparos)
@@ -684,7 +828,12 @@ namespace Project2
                         spriteElegido = alien1;
                     }
 
-                    listaAliens.Add(new AlienEnemigo(posInicial, spriteElegido.Width, spriteElegido.Height, tipoElegido));
+                    AlienEnemigo alien = new AlienEnemigo(posInicial, spriteElegido.Width, spriteElegido.Height, tipoElegido);
+
+                    alien.Vida = Math.Max(1, (int)Math.Round(alien.Vida * multiVidaDificultad[dificultad]));
+                    alien.VidaMaxima = alien.Vida;
+
+                    listaAliens.Add(alien);
                 }
 
             }
