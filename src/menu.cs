@@ -37,6 +37,8 @@ namespace Project2
         private Texture2D texBotonJugar;
         private Texture2D texTarjetaAzul;
         private Texture2D texTarjetaVerde;
+        private Texture2D texFacil, texMedio, texDificil;
+        private Texture2D texFacilPresionado, texMedioPresionado, texDificilPresionado;
         private Rectangle rectTitulo = new Rectangle(297, 130, 429, 67);
         // Imagenes del menu (Content: logo, panel_nombre, boton_continuar, panel_ranking)
         private Texture2D texLogo;
@@ -50,7 +52,11 @@ namespace Project2
         private Rectangle rectPanelNombre = new Rectangle(60, 480, 500, 166);
         private Rectangle botonContinuar = new Rectangle(130, 670, 360, 90);
         private Rectangle rectRanking = new Rectangle(590, 250, 400, 501);
-        private Rectangle botonJugar = new Rectangle(392, 800, 240, 81);
+        private Rectangle botonJugar = new Rectangle(392, 880, 240, 81);
+
+        private Rectangle rectFacil = new Rectangle(282, 710, 140, 90);
+        private Rectangle rectMedio = new Rectangle(442, 710, 140, 90);
+        private Rectangle rectDificil = new Rectangle(602, 710, 140, 90);
 
         // Se calculan en el constructor segun el tamano de cada imagen
         private Rectangle campoNombre;
@@ -61,6 +67,7 @@ namespace Project2
 
         private List<DatosNave> naves = new List<DatosNave>();
         private int naveSeleccionada = 0;
+        private int dificultad = 1;
 
         private string mensajeMenu = "";
         private bool errorMenu = false;
@@ -78,7 +85,10 @@ namespace Project2
         {
             get { return naves[naveSeleccionada]; }
         }
-
+        public int Dificultad
+        {
+            get { return dificultad; }
+        }
         public int IdJugador
         {
             get { return idJugador; }
@@ -118,6 +128,13 @@ namespace Project2
             texBotonJugar = content.Load<Texture2D>("boton_jugar");
             texTarjetaAzul = content.Load<Texture2D>("tarjeta_azul");
             texTarjetaVerde = content.Load<Texture2D>("tarjeta_verde");
+
+            texFacil = content.Load<Texture2D>("boton_facil");
+            texMedio = content.Load<Texture2D>("boton_medio");
+            texDificil = content.Load<Texture2D>("boton_dificil");
+            texFacilPresionado = content.Load<Texture2D>("boton_facil_presionado");
+            texMedioPresionado = content.Load<Texture2D>("boton_medio_presionado");
+            texDificilPresionado = content.Load<Texture2D>("boton_dificil_presionado");
 
 
             // Caja de escritura dentro de panel_nombre.png
@@ -267,6 +284,14 @@ namespace Project2
                     naveSeleccionada = i;
                 }
             }
+            if (ClicEn(rectFacil))
+                dificultad = 0;
+
+            if (ClicEn(rectMedio))
+                dificultad = 1;
+
+            if (ClicEn(rectDificil))
+                dificultad = 2;
 
             if (Presionada(Keys.Enter) || ClicEn(botonJugar))
             {
@@ -398,8 +423,7 @@ namespace Project2
         {
             spriteBatch.Draw(texTitulo, rectTitulo, Color.White);
 
-            DibujarTextoCentrado(spriteBatch, "Jugador: " + nombreJugador,
-                pantalla, 250, Color.White, 1f);
+            DibujarTextoCentrado(spriteBatch, "Jugador: " + nombreJugador, pantalla, 250, Color.White, 1f);
 
             float escala = 0.7f;
             float[] filasY = { 0.568f, 0.640f, 0.715f, 0.792f };
@@ -444,6 +468,10 @@ namespace Project2
                 tarjeta, YTarjeta(tarjeta, 0.90f, 0.6f),
                 elegida ? Color.Yellow : Color.LightGray, 0.6f);
             }
+            // El botón elegido se dibuja con la imagen "presionado"
+            spriteBatch.Draw(dificultad == 0 ? texFacilPresionado : texFacil, rectFacil, Color.White);
+            spriteBatch.Draw(dificultad == 1 ? texMedioPresionado : texMedio, rectMedio, Color.White);
+            spriteBatch.Draw(dificultad == 2 ? texDificilPresionado : texDificil, rectDificil, Color.White);
 
             spriteBatch.Draw(texBotonJugar, botonJugar, Color.White);
 
@@ -487,17 +515,14 @@ namespace Project2
 
         // ---------------- AYUDAS DE TEXTO ----------------
 
-        private void DibujarTexto(SpriteBatch spriteBatch, string texto,
-                                  Vector2 posicion, Color color, float escala)
+        private void DibujarTexto(SpriteBatch spriteBatch, string texto, Vector2 posicion, Color color, float escala)
         {
             spriteBatch.DrawString(fuente, texto, posicion, color,
                 0f, Vector2.Zero, escala, SpriteEffects.None, 0f);
         }
 
         // Centra el texto horizontalmente dentro de "area"
-        private void DibujarTextoCentrado(SpriteBatch spriteBatch, string texto,
-                                          Rectangle area, float y,
-                                          Color color, float escala)
+        private void DibujarTextoCentrado(SpriteBatch spriteBatch, string texto, Rectangle area, float y, Color color, float escala)
         {
             float ancho = fuente.MeasureString(texto).X * escala;
             float x = area.X + (area.Width - ancho) / 2f;
