@@ -202,7 +202,8 @@ insert into AliensFactions (Nombre, ResistenciaBase, SpriteBase, IDPatronMovimie
 insert into AliensTypes (Nombre, Vida, Velocidad, Dano, PuntosOtorgados, VelDisparos, IDAlienFaction) values
 ('Alien 1', 10, 40, 10, 20, 4.00, 1),
 ('Alien 2', 20, 55, 15, 40, 5.00, 2),
-('Alien 3', 30, 70, 25, 80, 6.00, 3);
+('Alien 3', 30, 70, 25, 80, 6.00, 3),
+('Alien Boss', 3000, 30, 50, 1000, 4.00, 3);
 
 insert into Naves (Nombre, Vida, Dano, Velocidad, Cadencia, Costo) values
 ('Cazador', 3, 10, 250, 0.60, 0.00),
